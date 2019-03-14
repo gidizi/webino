@@ -1,0 +1,179 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+{% load webs_extras %}
+<head>
+	<script>
+		$(document).ready(function(){
+			{% if page.background_img %} //when 'if' condition was written by javascript, if was not anyexisting background image, django raised an error
+				$('.pageContentArea').css("background-image", "url('{{page.background_img.url}}')");
+				//$('.mainDiv').css("background-position", "center");
+				$('.pageContentArea').css("background-repeat", "no-repeat");
+			{% endif %}			
+		})
+
+		$(document).ready(function(){
+			$(".unLinkedImage, .unLiknedText").on("click", function(ev){
+		        ev.preventDefault();
+			});
+		});
+	</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+		body {
+			margin:0;
+		}
+		ul {
+		    padding: 0;
+		    margin: 0;
+		    float: left;
+		}
+		li {
+			float: left;
+			display: inline;
+			position: relative;
+			width: 150px;
+		}
+		ul ul{
+			position: absolute;
+			display: none;
+			left: 0;
+			top: 100% 
+		}
+		ul ul ul{
+			left: 100%;
+			top: 0;
+		}
+		.bottomBar{
+			background-color: {{website.foot_back_color}};
+			border-top: 2px solid;
+		}
+
+		.navbar{
+			background-color: {{website.menu_back_color}};
+		}
+
+		.navbar a{
+			color: {{website.menu_text_color}};
+			font-size: 20px;
+		}
+
+		.pageContentArea{
+			background-color: {{website.page_back_color}};
+		}
+
+		.underConstruction{
+			text-align: center;
+		}
+		li:hover > ul {
+		    display: block;
+		}
+
+		div {
+			    word-wrap: break-word;        
+			    overflow-wrap: break-word;     
+			}
+
+		.textLink:hover{
+			text-decoration: none;
+		}
+
+		.textLink:link, .textLink{
+			color:inherit;
+		}
+
+		.unLinkedImage, .unLiknedText{
+			pointer-events: none;
+		}
+
+		.unLinkedImage:hover{
+			cursor: default;
+		}
+
+		.unLiknedText:hover, .unLiknedText:visited, .unLiknedText:link, .unLiknedText:active{
+			text-decoration: none;
+			color:inherit;
+			cursor: default;
+		}
+
+
+		.navTitle:hover, .navTitle:visited, .navTitle:link, .navTitle:active{
+			text-decoration: none;
+			color:inherit;
+		}
+
+
+	</style>
+</head>
+<body>
+<div style="max-width: 1200px; margin: auto; padding: 10px;">
+	<div class="navbar" style="margin-bottom: 14px">
+		<ul>
+			{% if website.page_set.all %}	
+				{% for page in website.page_set.all %}
+					<li>
+						{% if page.relates_to == page %}
+							{% block page_link %}
+								<a href="{% url 'page' website.web_url page.id %}" class="navTitle"><b>{{ page.title }}</b></a>
+							{% endblock page_link %}
+							<ul>
+							{% for son_page in page.page_set.all %}
+								{% if son_page.relates_to != son_page %}
+									<li>
+										{% block son_link %}
+										<a href="{% url 'page' website.web_url son_page.id %}" class="navTitle">{{ son_page.title }}</a>
+										{% endblock son_link %}
+										<ul>
+										{% for grandson in son_page.page_set.all %}
+											<li>
+												{% block grand_link %}
+												<a href="{% url 'page' website.web_url grandson.id %}" class="navTitle">{{ grandson.title}}</a>
+												{% endblock grand_link %}
+											</li>
+										{% endfor %}
+										</ul>
+									</li>
+								{% endif %}
+							{% endfor %}
+							</ul>
+						{% endif %}
+					</li>
+				{% endfor %}
+			{% else %}
+				<p style="font-size: 24px"><b>No Pages/Titles Are Available, Please Start By Clicking The "Add Page" Button</b></p>
+			{% endif %}
+		</ul>
+	</div>
+		<div class="pageContentArea">		
+			<div class="container-fluid">
+				{% for row in page.row_set.all %} 
+					<div class="row">
+						{% for block in row.block_set.all %}
+							<div class="col-md-{{ block.width }} offset-md-{{ block.distance }} examples">
+								{% for content in block.content.all %}
+									{% if content.existingContentType == 'textcontent' %}
+										<div style="text-align: {{content.textcontent.align}}; font-size:{{content.textcontent.size}}; color: {{content.textcontent.color}}; font-weight: {{content.textcontent.bold}};">
+											<a href="{{content.url_link}}" class="{{content.url_link|definePageLinkClass:'text'}} textLink">{{ content.textcontent.text|linebreaksbr }}</a>
+										</div>
+									{% else %}
+										<div style="text-align: center;">
+											<a href="{{content.url_link}}" class="{{content.url_link|definePageLinkClass:'img'}}"><img class="" src="{{content.imagecontent.image.url}}" alt="{{content.title}}" width="{% widthratio block.width 1 96 %}" draggable="false"></a>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						{% endfor %}
+					</div>
+				<br>
+				{% endfor %}
+			</div>
+		</div>
+	{% if page.footer_included %}
+		<div class="bottomBar">
+			<h3 class="underConstruction">Footer Content Editing Interface Is Still Under Development</h3>
+			<br><br><br><br><br><br><br><br>
+		</div>
+	{% endif %}
+</div>
+</body>

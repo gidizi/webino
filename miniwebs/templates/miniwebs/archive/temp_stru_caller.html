@@ -1,0 +1,153 @@
+{% load webs_extras %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<head>
+	<style type="text/css">
+		#action {
+		  position: fixed;
+		  bottom: -4px;
+		  right: 10px;
+		}
+		.row {
+	    height: 200px;
+		}
+		.examples {
+	    padding-top: 30px;
+	    padding-bottom: 30px;
+	    padding-right: 10px;
+	    padding-left: 10px;
+	    text-align: center;
+		}	
+
+	</style>
+</head>
+<body>
+	<div>
+		{% if messages %}
+			{% for message in messages %}
+				<div class = "alert alert-{{ message.tags }}">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
+	{% if elem_num %}
+		<h3>Choose the part of the screen width, that will be occupied by each element</h3>
+		<form action="{% url 'miniwebs:temp_stru_caller' %}" method="post">
+			{% csrf_token %}
+			<div style="max-width: 1200px; margin: 0 auto; padding 10px;">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-2">
+							<p>container number</p>
+							<p>Element's width:</p>
+							<p>single in line?</p><br>
+							<p>distance from the left container if fits in the same line / left edge if starts a new line:</p>
+						</div>
+						{% for i in ""|ljust:elem_num %}
+						    <div class="col-md-1">
+							    <p>{{ forloop.counter }}</p>
+						    	<select name="width{{ forloop.counter }}">
+						    	  	<option value="12">full width</option>
+						    	  	<option value="8">two thirds</option>
+						    	  	<option value="6">half</option>
+						    	  	<option value="4">third</option>
+						    	  	<option value="2">sixth</option>
+						    	</select>
+						    	<br><br>
+							    	<input type="radio" name="sin_line{{ forloop.counter }}" value="True" checked>yes<br>
+							    {% if forloop.counter != 1 %}
+							    	<input type="radio" name="sin_line{{ forloop.counter }}" value="False">no
+							    {% endif %}
+							    <br><br>						    	
+						    	<select name="offset{{ forloop.counter }}">
+						    	  	<option value="8">two thirds</option>
+						    	  	<option value="6">half</option>
+						    	  	<option value="4">third</option>
+						    	  	<option value="2">sixth</option>
+						    	  	<option value="0" selected="">none</option>
+						    	</select>
+					    	</div>
+				    	{% endfor %}
+					</div>
+				</div>
+			</div>
+			<input type="submit" name="action" value="resize">
+		</form>
+	{% elif spec|IsContentSubmited %}
+		<div style="max-width: 1200px; margin: 0 auto; padding 10px;">
+			<div class="container-fluid">
+				<h2>scroll down to see the stractur</h2>
+				<h3>the hight of each area will be determined by its content</h3>
+				<div class="row">
+					{% for elem in spec %}
+						{% if elem.sin_line == "True" %}						
+							<div class="w-100"></div>
+						{% endif %}
+							    <div class="col-md-{{ elem.width }} offset-md-{{ elem.offset }} examples">
+								    <p>container {{ forloop.counter }}</p>	
+								    {% autoescape off %}
+								        {{ elem.content|ExampleContent:elem.width }}
+								    {% endautoescape %}
+								    
+						    	</div>
+			    	{% endfor %}
+			    	<div class="w-100"></div>
+			    		<div class="col-md-12">
+			    			<form action="{% url 'miniwebs:temp_stru_caller' %}" method="post">
+			    				{% csrf_token %}
+			    				<input type="submit" name="action" value="ToDB">
+			    			</form>
+			    		</div>
+		    	</div>
+			</div>
+		</div>
+	{% elif spec %}
+			<form action="{% url 'miniwebs:temp_stru_caller' %}" method="post">
+				{% csrf_token %}
+				<div style="max-width: 1200px; margin: 0 auto; padding 10px;">"
+					<div class="container-fluid">
+						<h2>scroll down to see the stractur</h2>
+						<h3>the hight of each area will be determined by its content</h3>
+						<div class="row">
+							{% for elem in spec %}
+								{% if elem.sin_line == "True" %}						
+									<div class="w-100"></div>
+								{% endif %}
+									    <div style="border:2px solid DodgerBlue;" class="col-md-{{ elem.width }} offset-md-{{ elem.offset }}" ">
+										    <p>container {{ forloop.counter }}</p>	
+										    <select name="content{{ forloop.counter }}">
+										      	<option value="text">Text</option>
+										      	<option value="image">Image</option>
+										      	<option value="form">Form</option>
+										    </select>	
+											<br><br><br><br><br><br><br><br><br>
+								    	</div>
+					    	{% endfor %}
+				    	</div>
+					</div>
+				</div>
+				<input type="submit" name="action" value="send">
+			</form>
+	{% else %}
+		<h3>how many element do you want in the page?</h3>>
+		<select name="elem_num" id="elem_num">
+			{% for i in "xxxxxxxxxxxx" %}
+			  	<option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+			{% endfor %}
+		</select>
+		<button type="button" onclick="container_maker()">make containers</button>
+		<p id=temp></p>
+	{% endif %}
+
+<script>
+function container_maker() {
+    var elem_number = document.getElementById("elem_num").value;
+    document.getElementById("temp").innerHTML = elem_number;
+}
+</script>
+
+
+</body>

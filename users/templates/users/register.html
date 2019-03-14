@@ -1,0 +1,33 @@
+{% extends "general/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<head>
+	<script>
+		$(document).ready(function(){
+			$("#regForm").submit(function(){
+				alert("Creating a User might take 30-60 seconds, due to recreation of Example app-built website, which is vital for a proper project demonstration. Thank you for your patience")
+			})
+		})
+	</script>
+<div style="max-width: 600px; margin: 0 auto; padding 10px;">
+	<div class="userInstructionsDiv">
+		<h1 class="userInstructionsText"><b>Dear User, for an optimal project demonstration, please quickly create a system user</b></h1>
+	</div>
+	<form method="POST" id="regForm">
+		{% csrf_token %}
+		<fieldset>
+			<legend>Join Today</legend>
+			{{ form|crispy }}
+		</fieldset>
+		<div>
+			<button type="submit">Sign Up</button>
+		</div>
+	</form>
+	<div>
+		<medium>
+			Already have an account? <a href=""{% url 'login' %}"">Sign in</a>
+		</medium>
+	</div>
+</div>
+{% endblock content %}
+

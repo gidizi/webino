@@ -1,0 +1,45 @@
+<!-- Note: being called and shown only via the "include" section at the "panel" page-->
+<body>
+<h1 style="font-size: 18px">Choose the Page you want to Edit</h1>
+<div>
+	<ul style="list-style-type:disc">
+		{% if website.page_set.all %}	
+			{% for page in website.page_set.all %}
+				{% if page.relates_to == page %}
+					<li>
+						<a style="font-size: 17px;" href="{% url 'miniwebs:panel'  website.id 'edit_page' page.id %}">{{ page.title }}</a>
+						<ul style="list-style-type:square">
+						{% for son_page in page.page_set.all %}
+							{% if son_page.relates_to != son_page %}
+								<li>
+									<a style="font-size: 17px" href="{% url 'miniwebs:panel' website.id 'edit_page' son_page.id %}">{{ son_page.title }}</a>
+									<ul style="list-style-type:none">
+									{% for grandson_page in son_page.page_set.all %}
+										<li>
+											<a style="font-size: 17px" href="{% url 'miniwebs:panel' website.id 'edit_page' grandson_page.id %}">{{ grandson_page.title}}</a>
+										</li>
+									{% endfor %}
+									</ul>
+								</li>
+							{% endif %}
+						{% endfor %}
+						</ul>
+					</li>
+				{% endif %}
+			{% endfor %}
+			<li style="font-size: 17px; color: black;">UnAttached Pages
+				<ul style="list-style-type:square">
+					{% for page in website.page_set.all %}
+						{% if page.relates_to == None %}
+							<li><a style="font-size: 18px;" href="{% url 'miniwebs:panel'  website.id 'edit_page' page.id %}">{{ page.title }}</a></li>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			</li>
+			<!-- could late combine this section in the upper for, with js to append to the end of list -->
+		{% else %}
+			<p>There aren't any pages at your website yet</p>
+		{% endif %}
+	</ul>
+</div>
+</body>

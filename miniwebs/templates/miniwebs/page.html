@@ -1,0 +1,27 @@
+{% extends 'general/page_base.html' %}
+<!--Importent Note: although the page's structure does not look good, i still think this is the best
+	architecture for the current implementation.
+	The 'page base' is the template who creates pages for the database, and this current page is being run when we want to see a page throught the administration panel. this page override/push some of the links into the base template and make sure the user will be directed to the new pages via the administration panel - therefore i think its a good system design -->
+{% block page_link %}
+	{% if panel %}
+		<a href="{% url 'miniwebs:panel' website.id 'page' page.id %}" class="navTitle"><b>{{ page.title }}</b></a>
+	{% else %}
+		{{ block.super }}
+	{% endif %}
+{% endblock page_link %}
+{% block son_link %}
+	{% if panel %}
+		<a href="{% url 'miniwebs:panel' website.id 'page' son_page.id %}" class="navTitle">{{ son_page.title }}</a>
+	{% else %}
+		{{ block.super }}
+	{% endif %}
+{% endblock son_link %}
+{% block grand_link %}
+	{% if panel %}
+		<a href="{% url 'miniwebs:panel' website.id 'page' grandson.id %}" class="navTitle">{{ grandson.title }}</a>
+	{% else %}
+		{{ block.super }}
+	{% endif %}	
+{% endblock grand_link %}
+
+

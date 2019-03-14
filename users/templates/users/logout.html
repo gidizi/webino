@@ -1,0 +1,9 @@
+{% extends "general/base.html" %}
+{% block content %}
+<div style="max-width: 1200px; margin: auto; padding: 10px; height: 400px;">
+	<h2>You have been loggen out</h2>
+	<medium>
+		<a href="{% url 'login' %}">log in again</a><br>
+	</medium>
+</div>
+{% endblock content %}

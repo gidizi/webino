@@ -1,0 +1,218 @@
+{% extends "general/base.html" %}
+{% block content %}
+<head>
+	<script>
+		$(document).ready(function(){ /*seems like it works for text!!! */
+			{% if content_obj %} //i prefered to write the "if" condition by django template language, because javascript condition would recognize django template's return value of 'None' as true. 
+				var existingContentType = "{{ content_obj.existingContentType }}"
+				console.log("existingContentType",existingContentType)
+				$("#"+existingContentType).show()
+				if (existingContentType == "textcontent"){
+					var align = "{{content_obj.textcontent.align}}"
+					$("#align").val(align)
+					$("#text_content").css("text-align", align)
+					var fontSize = "{{content_obj.textcontent.size}}"
+					$("#fontsize").attr("value", fontSize)
+					$("#text_content").css("font-size", fontSize)
+					var fontColor = "{{content_obj.textcontent.color}}"
+					$("#fontcolor").attr("value", fontColor)
+					$("#text_content").css("color", fontColor)
+					var fontWeight = "{{content_obj.textcontent.bold}}"
+					$("#"+fontWeight).prop("checked",true)
+					$("#text_content").css("font-weight", fontWeight)
+				}
+			{% else %}
+				console.log("did not found existing content, trying to show radio buttons")
+				$("#contentTypeDiv").show()
+			{% endif %}
+		})
+
+		$(document).ready(function(){
+			$(".contentType").on('change', function(){
+				var currentlyValue = $(this).val();
+				$("#contentsArea").children().hide()
+				$("#"+currentlyValue).show()
+			})
+		})
+
+		//from here starting the font changing section
+		$(document).ready(function(){
+			$(".bold").on('change', function(){
+				var currentlyValue = $(this).val();
+				$("#text_content").css("font-weight", currentlyValue)
+			})
+		})
+
+		$(document).ready(function(){
+			$("#fontsize").on('change', function(){
+				var currentlyValue = $(this).val();+"px"
+				$("#text_content").css("font-size", currentlyValue)
+			})
+		})
+
+		$(document).ready(function(){
+			$("#fontcolor").on('change', function(){
+				var currentlyValue = $(this).val();
+				$("#text_content").css("color", currentlyValue)
+			})
+		})
+
+		$(document).ready(function(){
+			$("#align").on('change', function(){
+				var currentlyValue = $(this).val();
+				console.log("entered the bold function", currentlyValue)
+				$("#text_content").css("text-align", currentlyValue)
+			})
+		})
+
+		$(document).ready(function(){
+			$("#textForm").submit(function(){
+				if ($("#text_title").val() == ""){
+					alert("Content Title must be filled")
+					return false
+				}
+				if ($("#text_content").val() == ""){
+					alert("Content Text must be filled")
+					return false
+				}
+				if ($("#textcontUrlCB").prop('checked') == true){
+					if (!(checkLinkPrefix($("#urlTextLink").val()))){
+						return false
+					}
+				}
+			})
+		})
+
+		$(document).ready(function(){
+			$("#imageForm").submit(function(){
+				if( $("#image_title").val() == ""){
+					alert("Image Title must be filled")
+					return false
+				}
+				if ($("#imagecontUrlCB").prop('checked') == true){
+					if (!(checkLinkPrefix($("#urlImglLink").val()))){
+						return false
+					}
+				}
+			})
+		})
+
+		$(document).ready(function(){
+			$('#textcontUrlCB').click(function() {
+			    $("#urlTextLink, #urlTextTitle, #textUrlCheck").toggle();
+			});
+		});
+
+		$(document).ready(function(){
+			$('#imagecontUrlCB').click(function() {
+			    $("#urlImglLink, #urlImgTitle, #imageUrlCheck").toggle();
+			});
+		});
+
+		$(document).ready(function(){
+			$("#urlTextLink").on('keyup', function(e){
+				var url = $("#urlTextLink").val()
+				$("#textUrlCheck").attr("href",url);
+				
+			})
+		})
+
+		$(document).ready(function(){
+			$("#urlImglLink").on('keyup', function(e){
+				var url = $("#urlImglLink").val()
+				$("#imageUrlCheck").attr("href",url);
+				
+			})
+		})
+
+		$(document).ready(function(){
+			$('#textUrlCheck, #imageUrlCheck').click(function(ev) {
+				if (!(checkLinkPrefix($(this).attr("href")))){
+					ev.preventDefault()
+				}			    
+			});
+		});
+
+		function checkLinkPrefix(url){
+			if (url.startsWith("https://www") || url.startsWith("http://www")){
+				return true
+			} else {
+				alert("Valid URL must begin with 'https://www' or 'http://www'")
+				return false
+			}
+		}
+
+	</script>
+	<style type="text/css">
+		textarea, .imageDiv {
+		  width: calc({{block_obj.width}}%*100/12); /*determine the textarea's width as the acctual container's width. Notice, it does override the textarea's 'cols' properties, but as far as i read it is moostly fine for designing, and shouldn't have much influence  */
+		}
+
+	</style>
+</head>
+<body>
+<div id="contentTypeDiv" style="display:none;">
+	<h3>Choose the type of content</h3>
+	<input type="radio" name="contentType" class="contentType" value="textcontent">Text<br>
+	<input type="radio" name="contentType" class="contentType" value="imagecontent">Image<br> 
+</div>
+<div id="contentsArea">
+	<div id="textcontent" style="display:none;">
+		<h2>Text</h2>
+		<p>Notice that the text box's width, is exactly the same as the box's width at the actual page</p>
+		<p>The actual box's hight will be dermined by the length of the text</p>
+		<form action="{% url 'miniwebs:content_obj_properties' website.id page.id row.row_id block_obj.col_id sub_row_id %}" method="post" id="textForm">
+			{% csrf_token %}
+			<div style="width: 50%; margin-left: 25%; margin-right: 25%;">
+		      <b>Content Title</b>&nbsp;&nbsp;&nbsp;&nbsp; <input name="title" id="text_title" type="text" value="{{ content_obj.title }}"><br>
+		      <p style="font-size: 12; margin-bottom: 6px" >This is an internal field, required for content management</p>
+		      <b>Link content to URL</b> <input type="checkbox" name="use_content_as_link" id="textcontUrlCB" value="yes">&nbsp;&nbsp;&nbsp;
+		      <b style="display:none;" id="urlTextTitle">URL Link</b>&nbsp;<input name="url_link" id="urlTextLink" type="text" value="{{ content_obj.url_link }}" style="display:none;">
+		      <a href="#" id="textUrlCheck" style="display:none;" target="_blank">Click to Check Url</a><br>
+				<b>Align:</b>  
+				<select name="align" id="align" style="margin-top: 10px; margin-bottom: 10px">  
+				  <option value="left" id="left">left</option>
+				  <option value="center" id="center">center</option>
+				  <option value="right" id="right">right</option>
+				</select>&nbsp;&nbsp;
+				<b>Size:</b> <input id="fontsize" name="size" type="text" maxlength="2" size="2" value="16">&nbsp;&nbsp; 
+				<b>Color:</b> <input id="fontcolor" name="color" type="color"  value="#000000">&nbsp;&nbsp;
+				<b>Bold:</b> 
+				<input type="radio" name="bold" class="bold" value="bold" id="bold">yes
+				<input type="radio" name="bold" class="bold" value="normal" id="normal" checked=>no<br>
+				<b>Enter the block's Content:</b>
+			</div>
+			<div style="text-align: center; margin: 8px">
+			  <textarea id="text_content" name="text_content" rows="20" cols="100">{{ content_obj.textcontent.text }}</textarea>
+			  <br>
+			  <button type="submit" name="cell_content" value="Submit" style="margin: 8px">Submit</button>
+			</div>
+		</form>
+	</div>
+	<div id="imagecontent" style="display:none;">
+		<h2>Choose Image</h2>
+		<form action="{% url 'miniwebs:content_obj_properties' website.id page.id row.row_id block_obj.col_id sub_row_id %}" method="post" id="imageForm" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div style="width: 50%; margin-left: 25%; margin-right: 25%;">
+				<b>Image Title</b>&nbsp;&nbsp;&nbsp;&nbsp; <input name="title" id="image_title" type="text" value="{{ content_obj.title }}">
+				<p style="font-size: 12">This is an internal field, required for content management</p>
+				<b>Link content to URL</b> <input type="checkbox" name="use_content_as_link" id="imagecontUrlCB" value="yes" style="margin-bottom: 14px;">&nbsp;&nbsp;&nbsp;
+				<b style="display:none;" id="urlImgTitle">URL Link</b>&nbsp;<input name="url_link" id="urlImglLink" type="text" value="{{ content_obj.url_link }}" style="display:none;">
+				<a href="#" id="imageUrlCheck" style="display:none;" target="_blank">Click to Check Url</a><br>
+		        {{ image_form.as_p }}
+			</div>
+			    <button type="submit" style="width: 12%; margin-left: 44%; margin-right: 44%;">Upload and Update</button>
+		</form>
+		{% if content_obj.imagecontent.image.url %}
+			<div>
+				<div class="imageDiv" style="border-style: solid; border-color: DodgerBlue;
+				text-align: center; margin: 0 auto">
+					<b>Current Image</b><br>
+				    <img class="" src="{{content_obj.imagecontent.image.url}}" alt="{{content.title}}" width="{% widthratio block_obj.width 1 96 %}" style="margin-bottom: 12px">      
+			    </div>
+			<div>
+	    {% endif %}
+	</div>
+</div>
+</body>
+{% endblock content %}

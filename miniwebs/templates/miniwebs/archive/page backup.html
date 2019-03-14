@@ -1,0 +1,52 @@
+{% extends 'basetemplates/'|add:website.theme|add:'.html' %}
+
+{% block page_link %}
+	{% if panel %}
+		<a href="{% url 'miniwebs:panel' website.id 'page' page.id %}">{{ page.title }}</a>
+	{% else %}
+		{{ block.super }}
+	{% endif %}
+{% endblock page_link %}
+{% block son_link %}
+	{% if panel %}
+		<a href="{% url 'miniwebs:panel' website.id 'page' son_page.id %}">{{ son_page.title }}</a>
+	{% else %}
+		{{ block.super }}
+	{% endif %}
+{% endblock son_link %}
+{% block grand_link %}
+	{% if panel %}
+		<a href="{% url 'miniwebs:panel' website.id 'page' grandson.id %}">{{ grandson.title }}</a>
+	{% else %}
+		{{ block.super }}
+	{% endif %}	
+{% endblock grand_link %}
+
+{% block content %}
+  <h1>{{ page.title }}</h1>
+  <p>panel: {% firstof panel 'Regular User' %}</p>
+<div style="max-width: 1200px; margin: 0 auto; padding 10px;">
+	<div class="container-fluid">
+		{% for row in page.row_set.all %} 
+			<div class="row">
+				{% for block in row.block_set.all %}
+					<div class="col-md-{{ block.width }} offset-md-{{ block.distance }} examples">
+						{% if block.content %}
+							{{ block.content.content|linebreaksbr }}
+						{% endif %}
+					</div>
+				{% endfor %}
+				</div>
+		{% endfor %}
+	</div>
+</div>
+ {% endblock content %}
+
+  {% if page.page_set.all %}	
+ 	<h3>Related Pages</h3>
+	<ul>
+		{% for son in page.page_set.all %}
+			<li><a href="{% url 'miniwebs:page' website.id son.id %}">{{son.title}}</a></li><br>
+		{% endfor %}
+	</ul>
+{% endif %}

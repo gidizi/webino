@@ -1,0 +1,18 @@
+<head>
+	<script>
+		$(document).ready(function(){
+			{% if page.footer_included %} //i prefered to write the "if" condition by django template language, because js condition would not be able to read django's template tag boolean value, and would refer it as a string 
+				$("#includeFooter").prop("checked",true)
+			{% else %}
+				$("#unIncludeFooter").prop("checked",true)
+			{% endif %}
+		})
+	</script>
+</head>
+<body>
+	<form action="{% url 'miniwebs:edit_page' website.id page.id %}" method="post" id="pageForm">
+		{% include 'miniwebs/page_properties.html' %}
+		<button type="submit" name="action" value="Update">Update Page</button>
+		<button type="submit" name="action" value="Delete">Delete Page</button>
+	</form>
+</body>

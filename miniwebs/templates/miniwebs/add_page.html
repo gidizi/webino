@@ -1,0 +1,13 @@
+<head>
+	<script>
+		$(document).ready(function(){
+			$("#includeFooter").prop("checked",true)
+		})
+	</script>
+</head>
+<body>
+	<form action="{% url 'miniwebs:add_page' website.id %}" method="post" id="pageForm">
+		{% include 'miniwebs/page_properties.html' %}
+		<button type="submit" name="action" value="Add">Create Page</button>
+	</form>
+</body>

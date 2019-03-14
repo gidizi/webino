@@ -1,0 +1,57 @@
+{% extends "general/base.html" %}
+{% block content %}
+<head>	
+	<style type="text/css">
+		.MainDiv {
+			padding-top: 30px;
+			padding-bottom: 30px;
+			padding-right: 10px;
+			padding-left: 10px;
+			text-align: center;
+		}
+
+		.websiteProps {
+			margin: auto;
+			border-radius: 40px;
+			background: #2d4262;
+			font-color: white;
+			padding: 15px; 
+			margin-top: 20px;
+			width: 350px;
+			height: 80px;  
+			color: white;
+			font-size: 30px;
+		}
+
+		a:hover, a:visited, a:link, a:active {
+			text-decoration: none;
+		}
+
+		.websiteProps:hover {
+		  background: #8A2BE2;
+		}
+
+
+	</style>
+</head>
+<body>
+	<div class="MainDiv">
+		<div class="userInstructionsDiv" style="width:800px; margin: 0 auto">
+			<h1 class="userInstructionsText"><b>Webino is A Website Building Tool, Which offers a Custom Web Template Design, together with a convinient Content Management System.<br><br>To begin, You can Choose to Create A New Website or examine an existing Example Website</b></h1>
+		</div>
+		<br>
+		<h1>Websites Manager:</h1>
+		<h3>Choose one of your Websites:</h3>
+
+		{% for website in user.website_set.all %}
+			<a href="{% url 'miniwebs:panel' website.id 'page'%}" target="_blank">
+				<div class="websiteProps">
+					{{ website.business_name }}
+				</div>
+			</a>
+		{% endfor %}
+		<br>
+		<a href="{% url 'miniwebs:miniweb_creation' %}" style="font-size: 20px" target="_blank">Click to Create New Website</a>
+	</div>
+</body>
+{% endblock content %}

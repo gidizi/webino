@@ -1,0 +1,50 @@
+<head>
+  <script>
+    $(document).ready(function(){
+      $("#pageForm").submit(function(){
+        if (($("#pageTitle").val().length < 4) || ($("#pageTitle").val().length > 12)){
+          alert("Page Title should contain between 4 to 10 characters")
+          return false
+        }
+      })
+    })
+  </script>
+</head>
+<!-- Note: being called and shown only via the "include" section at the "panel" page-->
+{% load webs_extras %}
+<!-- Note - this template can be used for both Creating a new page, and Editing an existing one
+	 if page variable was sent from the server side, the page will be served as for Editing purposes,
+	 else, for page Creation purposes. -->
+{% csrf_token %}
+<b>Page title:</b><br>
+<input type="text" name="title" value="{{ page.title }}" maxlength="12" id="pageTitle">
+<br>
+<b>Location in Website's Menu: (Directly in menu row or as a sub page of existing page)</b><br>
+  <select name="parent">
+  	{% if page.relates_to == page and page != None %}
+  		<option value="{{ page.id }}" selected="selected">Directly in Menu Row - current</option>
+  	{% else %}
+  		<option value="{{ page|PageIdOrAltStr }}">Directly in Menu Row</option>
+  	{% endif %}
+   	{% for parent in page|AvailableParents:website %}
+		<!-- This condition is created to avoid offering a grand page as a parent page
+			a top level page is defined by a page related to itself. condition will be true only for top level pages, or pages that relates to a top level page -->
+   		{% if parent == page.relates_to %}
+				<option value="{{ parent.id }}" selected="selected">{{ parent.title }}'s sub page - current</option>
+   		{% else %}
+				<option value="{{ parent.id }}">{{ parent.title }}'s sub page</option>
+   		{% endif %}
+   	{% endfor %}
+   	{% if page.relates_to == None and page != None %}
+   		<option value="" selected="selected">UnAttached - current</option>
+   	{% else %}
+   		<option value="">UnAttached</option>
+   	{% endif %}
+  </select>
+  <br>
+{{ page|DepthLevel }}
+<br>
+<b>Include footer section?</b><br>
+<input type="radio" name="extend" value="True" id="includeFooter">yes<br>
+<input type="radio" name="extend" value="False" id="unIncludeFooter">no<br>
+	

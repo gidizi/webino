@@ -1,0 +1,64 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<head>
+	<style type="text/css">
+		#action {
+		  position: fixed;
+		  bottom: -4px;
+		  right: 10px;
+		}
+		.row {
+	    height: 200px;
+		}
+		.examples {
+	    padding-top: 30px;
+	    padding-bottom: 30px;
+	    padding-right: 10px;
+	    padding-left: 10px;
+	    text-align: center;
+		}	
+
+	</style>
+</head>
+<body>
+	<p>{{page.id}} {{page.title}}</p>
+	<div style="max-width: 1200px; margin: 0 auto; padding 10px;">
+		<div class="container-fluid">
+			<h3>Enter Contant to the page's containers</h3>
+			<h5>Border lines are just for your convenience and will not be shown at the acctual page</h5> 
+			<div class="row">
+				{% for block in page.block_set.all %} 
+					{% if block.new_line == True %}						
+						<div class="w-100"></div>
+					{% endif %}
+						    <div style="border-style: solid; border-color: DodgerBlue;" class="col-md-{{ block.width }} offset-md-{{ block.distance }} examples">
+						    	{% if block.content %}
+						    		{{ block.content.content|linebreaksbr }}
+						    		<form action="{% url 'miniwebs:container_content' website.id page.id %}" method="post">
+						    			{% csrf_token %}
+						    			<input type="submit" name="cell_num_edit" value="{{ forloop.counter }}">
+						    		</form>
+						    	{% else %}
+						    	<br><br><br><br><br>
+								    <p>container {{ forloop.counter }}</p>	
+									<form action="{% url 'miniwebs:container_content' website.id page.id %}" method="post">
+										{% csrf_token %}
+										<input type="submit" name="cell_num_add" value="{{ forloop.counter }}">
+									</form>
+									<br><br><br><br><br>
+								{% endif %}
+					    	</div>
+		    	{% endfor %}
+		    	<div class="w-100"></div>
+		    		<div class="col-md-12">
+		    			<form action="{% url 'miniwebs:panel' website.id 'page' %}" method="post">
+		    				{% csrf_token %}
+		    				<input type="submit" name="action" value="finish">
+		    			</form>
+		    		</div>
+	    	</div>
+		</div>
+	</div>
+</body>

@@ -1,0 +1,63 @@
+{% extends "general/base.html" %}
+{% block content %}
+<head>
+	<style type="text/css">
+		.panelMainDiv{
+			padding: 10px;
+			border-style: solid none solid solid;
+		}
+		.pageArea {
+	
+		}
+
+		.sideMenu {
+			padding-left: 10px;
+			border-right : 2px dashed;
+		}
+
+		.webDetails {
+			border-bottom : 2px dashed;
+			padding-bottom: 5px;
+			margin-bottom: 5px;
+		}
+
+		.sideMenu a:hover {
+			text-decoration: none;
+		}
+
+		.sideMenu a{
+			color:inherit;
+			font-weight: bold
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container-fluid panelMainDiv">
+		<div class="row">
+		    <div class="col-sm-2 sideMenu">
+		    	<div class="webDetails">
+			    	<p style="font-size:18px; display:inline">{{website.business_name}}</p><br>
+			    	<p style="font-size:14px; display:inline">www.webino.me/{{website.web_url}}</p>
+			    </div>
+			    <a href="{% url 'miniwebs:panel' website.id 'page' %}">Website Preview</a><br>
+			    <a href="{% url 'miniwebs:panel' website.id 'add_page' %}">Add Page</a><br>
+			    <a href="{% url 'miniwebs:panel' website.id 'pages_list' %}">Edit Page</a><br>
+			    <a href="{% url 'miniwebs:panel' website.id 'theme_select' %}">Modify Template</a><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			    <a href="{% url 'miniwebs:miniwebs_index' %}">Back to Index</a><br>
+			</div>
+			<div class="col-sm-10 pageArea">
+				{% if action == 'page' %}
+					{% if page %}
+						<a href="{% url 'page' website.web_url page.id %}" target="_blank">open in browser</a>
+					{% else %}
+						<a href="{% url 'page' website.web_url %}" target="_blank">open in browser</a>
+					{% endif %}
+				{% endif %}
+				{% include 'miniwebs/'|add:action|add:'.html' %}
+			</div>
+		</div>	
+	</div>
+</body>
+</html>
+{% endblock content %}

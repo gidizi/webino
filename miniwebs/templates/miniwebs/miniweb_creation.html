@@ -1,0 +1,72 @@
+{% extends "general/base.html" %}
+{% block content %}
+<head>
+	<script>
+		$(document).ready(function(){
+			console.log("basic function was working")
+			$("#urlBox").on('keydown', function(e){
+				if (e.shiftKey === true ) {
+					console.log("invalid char", e.which)
+			    	return false;
+				}
+				if(!((e.which > 64 && e.which < 91) || (e.which > 96 && e.which < 123) || e.which == 8 )){
+					console.log("invalid char", e.which)
+					return false;
+				}
+			})
+		})
+
+		$(document).ready(function(){
+			$("#miniwebForm").submit(function(){
+				if (($("#buisName").val().length < 4) || ($("#buisName").val().length > 16)){
+					alert("Business Name should contain between 4 to 16 characters")
+					return false
+				}
+				if (($("#buisType").val().length < 4) || ($("#buisType").val().length > 16)){
+					alert("Business Type should contain between 4 to 16 characters")
+					return false
+				}
+				if (($("#urlBox").val().length < 4) || ($("#urlBox").val().length > 10)){
+					alert("URL should contain between 4 to 10 characters")
+					return false
+				}
+				urlInput = $("#urlBox").val()
+				for (var i = 0; i < urlInput.length; i++) {
+					letter=urlInput[i].charCodeAt(0);
+					console.log("letter",letter)
+					if(!((letter > 64 && letter < 91) || (letter > 96 && letter < 123) || letter == 8 )){
+						alert("URL must contain letters only");
+						return false
+					}
+				}
+			})
+		})
+
+		$(document).ready(function(){
+			$("#urlBox").on('keyup', function(e){
+				var fullUrl = "www.webino.me/"+$(this).val()
+				$("#url").text(fullUrl);
+			})
+		})
+	</script>
+</head>
+<body>
+	<div style="max-width: 1200px; margin: auto; padding: 10px;">
+		<h1 style="font-size: 30px">Website Details:</h1>
+		<form action="{% url 'miniwebs:miniweb_creation' %}" method="post" id="miniwebForm">
+			{% csrf_token %}
+			Business name:<br>
+			<input type="text" name="business_name" maxlength="16" id="buisName">
+			<br>
+			Name to be Shown at the website's URL (letters only):<br>
+			<input type="text" name="web_url" maxlength="10" id="urlBox">
+			<br><br>
+			<p style="display:inline"><b>website address: </b></p>
+			<p id="url"></p>
+			<button type="submit">Create Website</button>
+		</form>
+	</div>
+</body>
+{% endblock content %}
+<!--later work with a for look to make dynamic number of titles (and therfore pages). its a bit complex
+advused to change the name of the fields + later will be needed to make the names dynamic with variables -->

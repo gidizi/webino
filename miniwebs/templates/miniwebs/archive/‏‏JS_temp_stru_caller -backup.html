@@ -1,0 +1,239 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<head>
+	<script>
+		$(document).ready(function(){
+			$(".addRow").click(function(){
+				var container = {row:0, col:0, width:2, offset:0}; //I must represent the id with 2 counters because it need to be unique for the html elements id's. 
+			//	elemId = 11
+				lineCell.push([container])
+				var content = '<div class="col-md-11"><div class="row" id="panelrow">'+createContainer(container)+'</div></div>'
+				isLineExists[0] = true //going to delete really soon
+				$("#newrow").prepend(content);
+				alert(lineLength(0))
+				lineLength[0] = 2 // change to dynamic index soon
+				$(this).hide(); //hides the "create new row button"
+				$("#contbutt").show(); //expose the button for creating more elements at the same row
+			});
+		});
+
+		$(document).ready(function(){
+			$(".addContainer").click(function(){
+				var prevCont = lineCell[0][lineCell[0].length-1];
+				var container = {row:prevCont.row, col:prevCont.col+1, width:2, offset:0};
+				lineCell[0].push(container) //going to change later to make [0] if new line and the current if isnt. and delete the initialize value
+				var content = createContainer(container)
+				$("#panelrow").append(content);
+				lineLength
+				lineLength[0] += 2 // change to dynamic index soon. add condition for the length before
+				hideShowButt(lineLength[0]) // change soon to a loop or function
+			});
+		});
+
+				$(document).ready(function(){
+			var prevWidth;
+			$("#newrow").on('focus', 'div div div .width', function(){
+				prevWidth = $(this).val();
+			}).on('change', 'div div div .width', function(){
+				var width = $(this).val();
+		//		var widthAftChan = lineLength[0]-Number(prevWidth)+Number(width);
+		//		if (widthAftChan <= 12){ //going to change index soon
+		//			hideShowButt(widthAftChan)
+		//			$($(this).parent()).attr("class", function(i, origValue){
+		//				var n = origValue.indexOf("offset");
+		//				var sub = origValue.substring(n);
+		//				lineLength[0] += width -prevWidth //change index soon
+				changeProp(prevWidth, width, 'width', $(this))
+				prevWidth = width
+		//				prevWidth = width //requierd in case that the field doesn't loses focus between value changes
+		//				return "col-md-"+width+" "+sub;
+		//			});
+		//		} else {
+		//			alert("This value cannot be choosen, The combination of the block's width and offset is too wide for the page's structure")
+		//			$(this).val(prevWidth);
+		//		}
+			});
+		});
+
+
+		$(document).ready(function(){
+			var prevOffset;
+			$("#newrow").on('focus', 'div div div .offset', function(){
+				prevOffset = $(this).val();
+			}).on('change', 'div div div .offset', function(){
+				var offset = $(this).val()
+				changeProp(prevOffset, offset, 'offset', $(this))
+			//	var widthAftChan = lineLength[0]-Number(prevOffset)+Number(offset)
+			//	if ( widthAftChan <=12){ //going to change index soon
+			//		hideShowButt(widthAftChan)
+			//		$("#borderdiv").attr("class", function(i, origValue){
+			//			var n = origValue.indexOf("offset");
+			//			var sub = origValue.substring(0,n);
+			//			lineLength[0] += offset - prevOffset
+			//			console.log("line len",lineLength[0])
+				prevOffset = offset
+			//			prevOffset = offset //requierd in case that the field doesn't loses focus between value changes
+			//			return sub+"offset-md-"+offset+" properties";
+			//		});
+			//	} else {
+			//		alert("This value cannot be choosen, The combination of the block's width and offset is too wide for the page's structure")
+			//		$(this).val(prevOffset);
+			//	}
+			});
+		});
+
+		function createContainer(container) {
+			elemId= container.row+":"+container.col //requierd a seperator between the rows and cols because each of then can become more the one digit length. for example, in case the elemid will have 3 digit length, we should be able to determine if the middle number belongs to the rows or to the cols.
+			var container = '<div style="border:2px solid DodgerBlue;" class="col-md-2 offset-md-0 properties" id="borderdiv'+elemId+'">			<b>Blocks Width</b>			<select name="width{{ forloop.counter }}" class="width" id="width'+elemId+'">	    	  	<option value="12">full width</option><option value="10">five sixths</option>	    	  	<option value="8">two thirds</option>	    	  	<option value="6">half</option>	    	  	<option value="4">third</option>	    	  	<option value="2" selected="">sixth</option>	    	</select>	    	<br><br>		    <b>Distance from the left</b>						    		    	<select name="offset{{ forloop.counter }}" class="offset" id="offset'+elemId+'"> <option value="10">five sixths</option>	    	  	<option value="8">two thirds</option>	    	  	<option value="6">half</option>	    	  	<option value="4">third</option>	    	  	<option value="2">sixth</option>	    	  	<option value="0" selected="">none</option>	    	</select> <button class="deleteContainer" type="button" title="Click to delete this block" id="delete'+elemId+'">X</button>		</div>';
+			return container;
+		}
+
+		function changeProp(prevVal, newVal, type, changedElem){
+			// I prefered passing $this instead of using event.currentTarget, cause then i would have to pass the elemId of the child either
+			var valAftChan = lineLength[0]-Number(prevVal)+Number(newVal);
+			if (valAftChan <= 12){ //going to change index soon
+				hideShowButt(valAftChan)
+				changedElem.parent().attr("class", function(i, origValue){
+					var n = origValue.indexOf("offset");
+					if (type=='width'){var sub = origValue.substring(n);}
+					if (type=='offset'){var sub = origValue.substring(0,n);}
+					lineLength[0] += newVal - prevVal //change index soon
+					if (type=='width'){return "col-md-"+newVal+" "+sub;}
+					if (type=='offset'){return sub+"offset-md-"+newVal+" properties";}
+				});
+			} else {
+				alert("This value cannot be choosen, The combination of the block's width and offset is too wide for the page's structure");
+				changedElem.val(prevVal);
+			};
+		};
+
+		function lineLength(lineNumber){
+			var i;
+			var lineLen = 0
+			for (i = 0; i < lineCell[lineNumber].length; i++) {
+			 currCont = lineCell[lineNumber][i];
+			 lineLen += currCont.width + currCont.offset ;
+			}
+			return lineLen
+		}
+
+		function hideShowButt(lineWidth) {
+		  if (lineWidth >= 11){
+		  	$("#butt").attr({
+		  	        "disabled" : true,
+		  	        "title" : "To add more elements, decrease the width or offset of existing elements at the line"
+		  	    });
+		  } else {
+		  	$("#butt").attr({
+		  		"disabled" : false,
+		  		"title" : "Click to Add Blocks to the current row"
+		  	})
+		  }
+		}
+
+
+		var lineNumber = 1; //was 0 before. maybe it can make problems with 0 based indexes
+		//var lineCell = [[0]] //marked as a comment cause im trying to do it differently and add first value depend on button location
+		lineCell = []
+		var isLineExists = [];
+	//	var lineLength = [];
+
+
+
+
+
+		
+
+//		$(document).ready(function(){
+//			$(".deleteContainer").click(function(){
+//				var elemdId = $(this).substring(n) //good chance that its not going to return the id as i expect
+//				var elemLoc = lineCell[0].findIndex(deleteCondition) //soon going to make a for loop for every sub array
+//				console.log(elemLoc)
+//				lineCell[9].splice(9,elemloc) //maybe required -1 but probabky not
+//				change total length //holy shit, that becomes messy needs to save that data before
+//				// looks like im going to store my data that way [[objet]] - [lines[rows[id, widht, offset]]]
+//				delete the acctual element
+
+//				function myFunction(cellValue) {
+//				  return cellValue == elemdId; //might make some probs + not sure thats the best place to locate the function, but an extra parameter wasnt available in the w3c explenation. maybe i could do function() inside but then its still complex to give it an argument/value/
+//				};	
+//			});	
+//		});
+		
+
+
+	</script>
+
+	<style type="text/css">
+		#action {
+		  position: fixed;
+		  bottom: -4px;
+		  right: 10px;
+		}
+		.row {
+	    height: 200px;
+		}
+		.examples {
+	    padding-top: 30px;
+	    padding-bottom: 30px;
+	    padding-right: 10px;
+	    padding-left: 10px;
+	    text-align: center;
+		}	
+
+		.properties {
+	    padding-top: 10px;
+	    padding-bottom: 10px;
+	    text-align: center;
+		}	
+
+	</style>
+</head>
+<body>
+	<h3>Add content blocks for each line, to define the page's stracture</h3>
+	<h3>blocks will be add to the right of the most right block at the line</h3>
+	<form action="{% url 'miniwebs:temp_stru_caller' %}" method="post">
+		<div style="max-width: 1200px; margin: 0 auto; padding 10px;">
+			<div class="container-fluid">
+				<div class="row" id="newrow">
+				    <div class="col-md-1">
+				    	<div class="row">
+				    	   <div class="col-md-12">
+				    	   		<button class="addContainer" type="button" title="Click to Add Blocks to the current row" id="contbutt" style="display:none;">+</button>
+				    	   		<button class="addRow" type="button" title="Click to Add a new row" id="rowbutt">Add New Row</button>
+						    </div>
+				    	</div>
+				    </div>								        
+				</div>
+			</div>
+		</div>
+		</form>
+	
+
+</body>
+
+<!--
+	<div class="row" id="panelrow">
+		<div style="border:2px solid DodgerBlue;" class="col-md-2 offset-md-0 properties" id="borderdiv">
+			<b>Block's Width</b>
+			<select name="width{{ forloop.counter }}" id="width">
+	    	  	<option value="12">full width</option>
+	    	  	<option value="8">two thirds</option>
+	    	  	<option value="6">half</option>
+	    	  	<option value="4">third</option>
+	    	  	<option value="2" selected="">sixth</option>
+	    	</select>
+	    	<br><br>
+		    <b>Distance from the left</b><br>						    	
+	    	<select name="offset{{ forloop.counter }}" id="offset">
+	    	  	<option value="8">two thirds</option>
+	    	  	<option value="6">half</option>
+	    	  	<option value="4">third</option>
+	    	  	<option value="2">sixth</option>
+	    	  	<option value="0" selected="">none</option>
+	    	</select>
+		</div>
+    </div>
+    -->

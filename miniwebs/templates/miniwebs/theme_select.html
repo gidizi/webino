@@ -1,0 +1,22 @@
+<!-- Note: being called and shown only via the "include" section at the "panel" page-->
+{% load webs_extras %}
+<body>
+	<!--{% if error_message %}<P><strong>{{ error_message }}</strong></P>{% endif %}-->
+	<h2>Choose The Website's Colors</h2><br>
+	<form action="{% url 'miniwebs:theme_select' website.id %}" method="post">
+		{% csrf_token %}
+		Menu Background Color:
+		<input type="color" name="menuback" value="{{website.menu_back_color}}">
+		<br><br>
+		Menu Text Color:
+		<input type="color" name="menutext" value="{{website.menu_text_color}}">
+		<br><br>
+		Page Background Color:
+		<input type="color" name="pageback" value="{{website.page_back_color}}">
+		<br><br>
+		Footer Background:
+		<input type="color" name="footback" value="{{website.foot_back_color}}">
+		<br><br>
+		<input type="submit" value="Set Properties">
+	</form>
+</body>
