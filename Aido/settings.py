@@ -81,11 +81,11 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'webinoapp',
-        'USER': 'gidizimmer',
-        'PASSWORD': 'abcdefg',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': 'daqe8ubfpsoibm',
+        'USER': 'gwixvxkbcdrdrh',
+        'PASSWORD': '37d12e4168cfdd50e3a8af23942e1a6b09fc8c52fa804a702c23498c2212b1e4',
+        'HOST': 'ec2-23-23-241-119.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
