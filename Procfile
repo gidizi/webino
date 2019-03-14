@@ -1,1 +1,1 @@
-web: gunicorn webino.wsgi
+web: gunicorn aido.wsgi
