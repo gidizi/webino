@@ -1,1 +1,1 @@
-web: gunicorn webinoapp.wsgi
+web: gunicorn webino.wsgi
