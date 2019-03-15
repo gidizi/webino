@@ -25,7 +25,7 @@ SECRET_KEY = 'au*=h!sm6-pr69rln6%tw7a^l&d6%2qm3i8@&#i!alw^81jz0i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [‘0.0.0.0’, ‘localhost’,'https://webinoapp.herokuapp.com']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'https://webinoapp.herokuapp.com']
 
 
 # Application definition
@@ -126,7 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, ‘staticfiles’) #sdded for prod
+STATIC_ROOT = os.path.join(BASE_DIR,'static') #added for prod
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
