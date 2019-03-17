@@ -1,1 +1,1 @@
-web: gunicorn miniwebs.wsgi —-log-file -
+web: gunicorn aido.wsgi —-log-file -
