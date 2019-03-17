@@ -17,4 +17,4 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Aido.settings')
 
 application = get_wsgi_application()
 
-a#pplication = DjangoWhiteNoise(application)
+#application = DjangoWhiteNoise(application)
