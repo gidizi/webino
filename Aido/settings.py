@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'au*=h!sm6-pr69rln6%tw7a^l&d6%2qm3i8@&#i!alw^81jz0i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'webinoapp.herokuapp.com']
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic', #added for running whitenoise in development
     'django.contrib.staticfiles',
 ]
 
@@ -131,7 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'static') #added for prod
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #added for prod
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -140,6 +141,7 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # added for prod
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
