@@ -1,1 +1,1 @@
-web: gunicorn aido.wsgi —-log-file -
+web: gunicorn Aido.wsgi —-log-file -
