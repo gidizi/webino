@@ -4,7 +4,7 @@
 <head>
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js">//base template has slim version</script> 
 	{% load static %}
-		<script src="{% static '/content_panel.js' %}"></script>
+		<script src="{% static 'content_panel.js' %}"></script>
 	<script>
 		$(document).ready(function(){
 			{% if page.background_img %} //when 'if' condition was written by javascript, if was not anyexisting background image, django raised an error
