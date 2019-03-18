@@ -115,8 +115,8 @@ def structure_panel(request, website_id, page_id):
 		else:
 			is_it_new_page = True
 			pre="content_images/examples/"
-			example_img_urls = [pre+"Dubai_Wingsuit_Flying_Trip_(7623578306).jpg",pre+"Giraffe-Necking-Etosha.jpg",
-			pre+"Rock_Climbing_in_Mirabad_-_Nishapur_03.jpg",pre+"salicilina-2901498_960_720.png"]
+			example_img_urls = [pre+"wingsuit.jpg",pre+"giraffe.jpg",
+			pre+"climbing",pre+"atom.png"]
 			example_url_index = 0
 		for key in request.POST:
 			if 'width' in key : 
