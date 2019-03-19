@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 
-
 def page(request, web_url, page_id=None): 
 	"""load the acctual builded website
 	Note: available for all users, authorization isn't needed"""
