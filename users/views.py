@@ -14,7 +14,7 @@ def register(request):
 			username = form.cleaned_data.get('username')
 			password = form.cleaned_data.get('password1')
 			user_obj = User.objects.get(username=username)
-			example_web1 = Website.objects.get(web_url='Tnet')
+			example_web1 = Website.objects.get(web_url='tnet')
 			websiteDeepCopy(user_obj, example_web1) #Auto creating website, for project demonstration
 			user = authenticate(username=username, password=password)
 			login(request, user)
@@ -114,7 +114,7 @@ def contentDeepCopy(content, block_or_page_relates_to):
 
 
 
-
+"""
 def copyWebDbToDb(request):
 	website = Website.objects.get(web_url='Tnet')
 	old_pages = website.page_set.all()
@@ -157,11 +157,6 @@ def copyWebDbToDb(request):
 						print("the content object i want to attach: ",content)
 						old_acctualcontent.content = content
 						old_acctualcontent.save(using='postgre')
-						"""if (type(old_acctualcontent)==TextContent):
-							content.textcontent = old_acctualcontent
-						if (type(old_acctualcontent)==ImageContent):
-							content.imagecontent = old_acctualcontent
-						content.save(using='postgre')"""
 
 				block.pk = None
 				block.row = None
@@ -206,51 +201,4 @@ def copyWebDbToDb(request):
 	
 	return redirect('main_route')
 
-
-
-"""temprary copy of working version
-for page in old_pages:
-	old_rows = page.row_set.all()
-	old_contents = Content.objects.filter(pages=page)
-	#take care of these contents. maybe with a function to be used in both places
-
-	page.pk = None
-	page.website = website_object
-	page.save()
-
-	page.relates_to = page #just the simple case for main pages
-	page.save()
-			
-	print("these are the rows we found!", old_rows)
-	
-
-	for row in old_rows:
-		old_blocks = row.block_set.all()
-		row.pk = None
-		row.page = page
-		row.save()
-
-		for block in old_blocks:
-			old_contents = Content.objects.filter(blocks=block)
-			block.pk = None
-			block.row = row
-			block.save()
-
-
-			for content in old_contents:
-				old_acctualcontent = None
-				if hasattr(content, 'textcontent'):
-					old_acctualcontent = content.textcontent
-				elif hasattr(content, 'imagecontent'):
-					old_acctualcontent = content.imagecontent			
-
-				content.pk = None
-				content.content_object = block
-				content.save()
-
-				if old_acctualcontent is not None:
-					old_acctualcontent.pk = None
-					old_acctualcontent.content = content
-					old_acctualcontent.save()
-
-					#worked in the shell: Content.objects.filter(blocks=blc) """
+"""

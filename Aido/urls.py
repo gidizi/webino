@@ -23,7 +23,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('justatemp/', user_views.copyWebDbToDb, name="copyWebDbToDb"),
     path('', views.main_route, name="main_route"),
     path('admin/', admin.site.urls),
     path('miniwebs/', include('miniwebs.urls')),
