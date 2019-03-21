@@ -104,7 +104,7 @@ def contentDeepCopy(website, content, block_or_page_relates_to):
 
 	content.pk = None
 	content.content_object = block_or_page_relates_to
-	content.url_link = content.url_link.replace(website.web_url, website.web_url+"_"+str(user_object.id))
+	content.url_link = content.url_link.replace(website.web_url, website.web_url+"_"+str(website.user.id))
 	content.save()
 
 	if old_acctualcontent is not None:
