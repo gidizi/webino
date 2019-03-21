@@ -13,7 +13,7 @@ class Content(models.Model): #make sure it have to be at the top of the page. if
 	#page = models.ForeignKey(Page, on_delete=models.CASCADE, null=True) #required direct relation between the content and the page, for maintaining content available when block deleted. 
 	#block = models.ForeignKey(Block, on_delete=models.SET_NULL, null=True) #later on mark on the page that show all contents, contents without link
 	title =  models.CharField(max_length=40)
-	con_type = models.CharField(max_length=40) # this field reffers to image or text content, and its different from the generic keys 'content_type' field  # can add "choices" to limit to several options. #will tell from which field (diff types) to get the content
+	#con_type = models.CharField(max_length=40) # this field reffers to image or text content, and its different from the generic keys 'content_type' field  # can add "choices" to limit to several options. #will tell from which field (diff types) to get the content
 	sub_row_id = models.IntegerField(default = 0)
 	url_link = models.URLField(default="") #can change later to default=None
 	content_type =   models.ForeignKey(ContentType, blank=True, null=True, on_delete=models.SET_NULL) #Note, according to documentation, GenericForeignKey do not accept on_delete argument. (signals can be used as an alternative but we will not use them here). To avoid content deletations in cases which block is being deleted (during recreating structure proc for example), we will attach the content directly to its parent page in such cases via the view function. (i wrote the on_delete arg just because otherwise it gives an unclear erro, although its not working and shouldnt be working according to the documentations) 
@@ -35,7 +35,7 @@ class Content(models.Model): #make sure it have to be at the top of the page. if
 			return "imagecontent"
 
 	def __str__(self):
-		return "Content Type: "+str(self.content_type)+", Object Id: "+str(self.object_id)+", Content Object: "+str(self.content_object)
+		return "Title: "+str(self.title)+" Content Type: "+str(self.content_type)+", Object Id: "+str(self.object_id)
 
 class Website(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True) # change it later so if user deletes account, business hall will stay unless user explicitly decides to delete it
