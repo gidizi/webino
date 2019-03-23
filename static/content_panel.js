@@ -23,6 +23,7 @@ $(document).ready(function(){
 
 function moveDown(contBox){
 	switchElemId(contBox, contBox.next())
+	switchContainerContentEditUrl(contBox, contBox.next())
 	contBox.insertAfter(contBox.next())
 	//temp: if i would like to reload the content boxes i think i would pass the content objects from the view (cause its difficult to get the django block object at the js) but it still makes a problem in case i would like to send types of contents like forms and pics
 }
@@ -37,6 +38,7 @@ $(document).ready(function(){
 
 function moveUp(contBox){
 	switchElemId(contBox.prev(), contBox)
+	switchContainerContentEditUrl(contBox.prev(), contBox)
 	contBox.insertBefore(contBox.prev())
 }
 
@@ -47,6 +49,14 @@ function switchElemId(firstElem, nextEleme){
 	if (tuto_stage == 1){
 		tutorial_stage();
 	}
+}
+
+function switchContainerContentEditUrl(firstElem, nextEleme){
+	var firstConentEditUrl=firstElem.find(".editContLink")
+	var nextContentEditUrl=nextEleme.find(".editContLink")
+	var firstVal=firstConentEditUrl.attr("href")
+	firstConentEditUrl.attr("href", nextContentEditUrl.attr("href"))
+	nextContentEditUrl.attr("href", firstVal)
 }
 
 /*	function createBoxContents(rowId, colId, subRowId) {
