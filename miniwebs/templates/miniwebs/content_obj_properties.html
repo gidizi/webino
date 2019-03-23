@@ -7,6 +7,8 @@
 				var existingContentType = "{{ content_obj.existingContentType }}"
 				console.log("existingContentType",existingContentType)
 				$("#"+existingContentType).show()
+				console.log("{{content_obj.url_link}}")
+
 				if (existingContentType == "textcontent"){
 					var align = "{{content_obj.textcontent.align}}"
 					$("#align").val(align)
@@ -20,6 +22,15 @@
 					var fontWeight = "{{content_obj.textcontent.bold}}"
 					$("#"+fontWeight).prop("checked",true)
 					$("#text_content").css("font-weight", fontWeight)
+					if ("{{content_obj.url_link}}"!= ""){
+						$("#textcontUrlCB").prop("checked",true)
+						textUrlPropToggle()
+					}
+				} else {
+					if ("{{content_obj.url_link}}"!= ""){
+						$("#imagecontUrlCB").prop("checked",true)
+						imgUrlPropToggle()
+					}
 				}
 			{% else %}
 				console.log("did not found existing content, trying to show radio buttons")
@@ -99,15 +110,23 @@
 
 		$(document).ready(function(){
 			$('#textcontUrlCB').click(function() {
-			    $("#urlTextLink, #urlTextTitle, #textUrlCheck").toggle();
+			    textUrlPropToggle()
 			});
 		});
 
+		function textUrlPropToggle(){
+			$("#urlTextLink, #urlTextTitle, #textUrlCheck").toggle();
+		}
+
 		$(document).ready(function(){
 			$('#imagecontUrlCB').click(function() {
-			    $("#urlImglLink, #urlImgTitle, #imageUrlCheck").toggle();
+			    imgUrlPropToggle()
 			});
 		});
+
+		function imgUrlPropToggle(){
+			$("#urlImglLink, #urlImgTitle, #imageUrlCheck").toggle();
+		}
 
 		$(document).ready(function(){
 			$("#urlTextLink").on('keyup', function(e){

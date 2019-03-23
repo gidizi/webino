@@ -109,10 +109,10 @@ def contentDeepCopy(website, content, block_or_page_relates_to, page): #drop pag
 		if previous_web_url in content.url_link:
 			new_url_link = content.url_link.replace(previous_web_url, website.web_url) #later can leave it outside the nearestif, because exp not in link, nothing will happend
 			if page == website.page_set.last(): #very TEMPORARY IMPLEMENTATION works only for the private case,
-		#soon the url will contatin the page name itself and it wont be need any update!
+		#soon the url will contatin the page name itself instead of an id and it wont be needed any update!
 				new_page_url =  website.page_set.first().id
 			if page == website.page_set.first(): #very TEMPORARY IMPLEMENTATION works only for the private case,
-		#soon the url will contatin the page name itself and it wont be need any update!
+		#soon the url will contatin the page name itself instead of an id and it wont be needed any update!
 				new_page_url = page.id+1
 			content.url_link = new_url_link[:new_url_link[:-1].rfind('/')+1]+str(new_page_url)+'/' #very TEMPORARY IMPLEMENTATION
 	content.save()
