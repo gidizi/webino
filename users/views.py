@@ -106,14 +106,20 @@ def contentDeepCopy(website, content, block_or_page_relates_to, page): #drop pag
 	content.content_object = block_or_page_relates_to
 	if content.url_link:
 		previous_web_url = website.web_url[:website.web_url.rfind('_'+str(website.user.id))]
-		new_url_link = content.url_link.replace(previous_web_url, website.web_url)
-		if page == website.page_set.first(): #very TEMPORARY IMPLEMENTATION works only for the private case,
-	#soon the url will contatin the page name itself and it wont be need any update!
-			new_page_url = page.id+1
-		if page == website.page_set.last(): #very TEMPORARY IMPLEMENTATION works only for the private case,
-	#soon the url will contatin the page name itself and it wont be need any update!
-			new_page_url =  website.page_set.first().id
-		content.url_link = new_url_link[:new_url_link[:-1].rfind('/')+1]+str(new_page_url)+'/' #very TEMPORARY IMPLEMENTATION
+		if previous_web_url in content.url_link:
+			new_url_link = content.url_link.replace(previous_web_url, website.web_url) #later can leave it outside the nearestif, because exp not in link, nothing will happend
+			print("page",page)
+			print("website.page_set.first()",website.page_set.first())
+			print("website.page_set.last()",website.page_set.last())
+			if page == website.page_set.first(): #very TEMPORARY IMPLEMENTATION works only for the private case,
+		#soon the url will contatin the page name itself and it wont be need any update!
+				print("page.id",page.id)
+				new_page_url = page.id+1
+				print("new_page_url",new_page_url)
+			if page == website.page_set.last(): #very TEMPORARY IMPLEMENTATION works only for the private case,
+		#soon the url will contatin the page name itself and it wont be need any update!
+				new_page_url =  website.page_set.first().id
+			content.url_link = new_url_link[:new_url_link[:-1].rfind('/')+1]+str(new_page_url)+'/' #very TEMPORARY IMPLEMENTATION
 	content.save()
 		
 
