@@ -60,7 +60,7 @@ class Page(models.Model):
 	title = models.CharField(max_length=10) 
 	footer_included = models.BooleanField(default=False)
 	content = GenericRelation(Content, related_query_name='pages')
-	background_img = models.ImageField(upload_to="pages_background", null=True)
+	background_img = models.ImageField(upload_to="pages_background", blank=True, null=True)
 
 	class Meta:# not working, it needs to be father id. fix it
 		unique_together = (('title', 'id'),) #in order to show the web_url at the websites url, web_url must be unique for every id 

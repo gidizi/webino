@@ -78,7 +78,7 @@ def pageDeepCopy(website, page, page_relates_to):
 
 
 			for content in old_contents:
-				contentDeepCopy(website, content, block)
+				contentDeepCopy(website, content, block, page)
 				"""
 				old_acctualcontent = None
 				if hasattr(content, 'textcontent'):
@@ -95,7 +95,7 @@ def pageDeepCopy(website, page, page_relates_to):
 					old_acctualcontent.content = content
 					old_acctualcontent.save()"""
 
-def contentDeepCopy(website, content, block_or_page_relates_to):
+def contentDeepCopy(website, content, block_or_page_relates_to, page): #drop page arg after fixing the url page implementation
 	old_acctualcontent = None
 	if hasattr(content, 'textcontent'):
 		old_acctualcontent = content.textcontent
@@ -104,9 +104,18 @@ def contentDeepCopy(website, content, block_or_page_relates_to):
 
 	content.pk = None
 	content.content_object = block_or_page_relates_to
-	previous_web_url = website.web_url[:website.web_url.rfind('_'+str(website.user.id))]
-	content.url_link = content.url_link.replace(previous_web_url, website.web_url)
+	if content.url_link:
+		previous_web_url = website.web_url[:website.web_url.rfind('_'+str(website.user.id))]
+		new_url_link = content.url_link.replace(previous_web_url, website.web_url)
+		if page == website.page_set.first(): #very TEMPORARY IMPLEMENTATION works only for the private case,
+	#soon the url will contatin the page name itself and it wont be need any update!
+			new_page_url = page.id+1
+		if page == website.page_set.last(): #very TEMPORARY IMPLEMENTATION works only for the private case,
+	#soon the url will contatin the page name itself and it wont be need any update!
+			new_page_url =  website.page_set.first().id
+		content.url_link = new_url_link[:new_url_link[:-1].rfind('/')+1]+str(new_page_url)+'/' #very TEMPORARY IMPLEMENTATION
 	content.save()
+		
 
 	if old_acctualcontent is not None:
 		old_acctualcontent.pk = None
