@@ -154,11 +154,11 @@
 								{% for content in block.content.all %}
 									{% if content.existingContentType == 'textcontent' %}
 										<div style="text-align: {{content.textcontent.align}}; font-size:{{content.textcontent.size}}; color: {{content.textcontent.color}}; font-weight: {{content.textcontent.bold}};">
-											<a href="{{content.url_link}}" class="{{content.url_link|definePageLinkClass:'text'}} textLink">{{ content.textcontent.text|linebreaksbr }}</a>
+											<a href="{{content.url_link}}" class="{{content.url_link|definePageLinkClass:'text'}} textLink" target="{% if website.web_url not in content.url_link %}_blank{% endif %}">{{ content.textcontent.text|linebreaksbr }}</a>
 										</div>
 									{% else %}
 										<div style="text-align: center;">
-											<a href="{{content.url_link}}" class="{{content.url_link|definePageLinkClass:'img'}}"><img class="" src="{{content.imagecontent.image.url}}" alt="{{content.title}}" width="{% widthratio block.width 1 96 %}" draggable="false"></a>
+											<a href="{{content.url_link}}" class="{{content.url_link|definePageLinkClass:'img'}}" target="{% if website.web_url not in content.url_link %}_blank{% endif %}"><img class="" src="{{content.imagecontent.image.url}}" alt="{{content.title}}" width="{% widthratio block.width 1 96 %}" draggable="false"></a>
 										</div>
 									{% endif %}
 								{% endfor %}
