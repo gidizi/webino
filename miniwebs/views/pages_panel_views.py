@@ -36,6 +36,8 @@ def panel(request, website_id, action, page_id=None):
 		page = None
 	#else:
 	#	page = website.page_set.first() #put it in a different place so it wont will affect only the specific things requiered and not the general.
+	first_web_page = website.page_set.first()
+	first_page_url = reverse('page', kwargs={'web_url' : website.web_url, 'page_id' : first_web_page.id}) #soon combine and render
 	return render(request, 'miniwebs/panel.html', {'website' : website, 'page' : page, 'action' : action, 'panel' : True})
 
 
