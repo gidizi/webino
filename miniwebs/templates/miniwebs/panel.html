@@ -54,7 +54,10 @@
 						<a href="{% url 'page' website.web_url %}" target="_blank">open in browser</a>
 					{% endif %}
 				{% endif %}
-				{% include 'miniwebs/'|add:action|add:'.html' %}
+				<br>
+				<iframe src="http://localhost:8000/tnet/13/" height="800" width="1200" style="border:none;">
+				  <p>Your browser does not support iframes.</p>
+				</iframe>
 			</div>
 		</div>	
 	</div>
