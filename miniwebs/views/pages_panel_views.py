@@ -25,20 +25,18 @@ def panel(request, website_id, action, page_id=None):
 	The website panel is divided into two main section - navigation menu, and panel's body.
 	The 'action' objects sent to the template, instruct the panel which tool to load at the panels's body"""
 	website = authorization_check(request, website_id)
-	if page_id:  #must make this condition. cannot try to get from db anyway, because db might find value with id equals to None
+	if page_id:  #this condition is required. cannot try to get from db anyway, because db might find value with id equals to None
 		page = website.page_set.get(id=page_id) # i used in other place some alternative way to get or None in one sentence - django anoyning ve kaele #maybe this way is still ok cause i dont want None here
 	elif action == 'page':
 		try:
 			page = website.page_set.first() #dont want to automatically send it to the template when clicking 'Website Preview' button, because of the special case when no pages exists
+			first_page_url = reverse('page', kwargs={'web_url' : website.web_url, 'page_id' : page.id})
+			return render(request, 'miniwebs/panel.html', {'website' : website, 'page' : page, 'action' : action, 'panel' : True, 'first_page_url' : first_page_url})
 		except:
 			page = None
 	else:
 		page = None
-	#else:
-	#	page = website.page_set.first() #put it in a different place so it wont will affect only the specific things requiered and not the general.
-	first_web_page = website.page_set.first()
-	first_page_url = reverse('page', kwargs={'web_url' : website.web_url, 'page_id' : first_web_page.id}) #soon combine and render
-	return render(request, 'miniwebs/panel.html', {'website' : website, 'page' : page, 'action' : action, 'panel' : True, 'first_page_url' : first_page_url})
+	return render(request, 'miniwebs/panel.html', {'website' : website, 'page' : page, 'action' : action, 'panel' : True})
 
 
 @login_required

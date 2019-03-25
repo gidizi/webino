@@ -114,22 +114,16 @@
 				{% for page in website.page_set.all %}
 					<li>
 						{% if page.relates_to == page %}
-							{% block page_link %}
-								<a href="{% url 'page' website.web_url page.id %}" class="navTitle"><b>{{ page.title }}</b></a>
-							{% endblock page_link %}
+							<a href="{% url 'page' website.web_url page.id %}" class="navTitle"><b>{{ page.title }}</b></a>
 							<ul>
 							{% for son_page in page.page_set.all %}
 								{% if son_page.relates_to != son_page %}
 									<li>
-										{% block son_link %}
 										<a href="{% url 'page' website.web_url son_page.id %}" class="navTitle">{{ son_page.title }}</a>
-										{% endblock son_link %}
 										<ul>
 										{% for grandson in son_page.page_set.all %}
 											<li>
-												{% block grand_link %}
 												<a href="{% url 'page' website.web_url grandson.id %}" class="navTitle">{{ grandson.title}}</a>
-												{% endblock grand_link %}
 											</li>
 										{% endfor %}
 										</ul>
