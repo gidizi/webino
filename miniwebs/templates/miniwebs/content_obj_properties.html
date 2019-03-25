@@ -1,4 +1,5 @@
 {% extends "general/base.html" %}
+{% load webs_extras %}
 {% block content %}
 <head>
 	<script>
@@ -210,7 +211,7 @@
 	</div>
 	<div id="imagecontent" style="display:none;">
 		<h2>Choose Image</h2>
-		<form action="{% url 'miniwebs:content_obj_properties' website.id page.id row.row_id block_obj.col_id sub_row_id %}" method="post" id="imageForm" enctype="multipart/form-data">
+		<form action="{% url 'miniwebs:content_obj_properties' website.id page.id row.row_id block_obj.col_id sub_row_id %}" method="post" id="imageForm" enctype="multipart/form-data"      {{content_obj|disableBrowserImageDemandInCaseImageExists}}>
 			{% csrf_token %}
 			<div style="width: 50%; margin-left: 25%; margin-right: 25%;">
 				<b>Image Title</b>&nbsp;&nbsp;&nbsp;&nbsp; <input name="title" id="image_title" type="text" value="{{ content_obj.title }}">

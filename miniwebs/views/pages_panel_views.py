@@ -211,8 +211,7 @@ def content_obj_properties(request, website_id, page_id, row_id, col_id, sub_row
 	if request.method =='POST':
 		if 'image' in request.FILES :
 			if content_obj:
-				if hasattr(content_obj, 'textcontent'): #case should not be available via javascript restriction, weitten just for safety
-					#can leave a message
+				if hasattr(content_obj, 'textcontent'): #case should not be available via javascript restriction, weitten just for safety in case JS failed
 					return HttpResponseRedirect(reverse('miniwebs:content_panel', kwargs={ 'website_id' : website_id, 'page_id' : page_id }))
 				image_form = ImageContentForm(request.POST, request.FILES, instance=content_obj.imagecontent)
 			else:
@@ -230,8 +229,9 @@ def content_obj_properties(request, website_id, page_id, row_id, col_id, sub_row
 				content_obj.save()"""
 		else:
 			if content_obj:
-				if hasattr(content_obj, 'imagecontent'): #case should not be available via javascript restriction, weitten just for safety
-					#can leave a message
+				if hasattr(content_obj, 'imagecontent'): # case of editing existing image content object, with no image uploaded, just general content details updated.
+				# also restriction for case when JS failed and user managed to fill imageform for content of textcontent type
+					updateContentProperties(request, content_obj) 
 					return HttpResponseRedirect(reverse('miniwebs:content_panel', kwargs={ 'website_id' : website_id, 'page_id' : page_id }))
 				textcontent_obj = TextContent.objects.get(content = content_obj ) #try to make generic
 			else:

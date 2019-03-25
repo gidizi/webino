@@ -1,4 +1,5 @@
 from django import template
+from miniwebs.models import Website, Page, Row, Block, Content, TextContent, ImageContent
 from django.db.models import Q, F
 
 
@@ -68,4 +69,15 @@ def definePageLinkClass(url, cont_type):
             return "unLiknedText"
     else:
         return ""
+
+
+@register.filter
+def disableBrowserImageDemandInCaseImageExists(content_obj):
+    print ("entered the filter")
+    if hasattr(content_obj, 'imagecontent'):
+        if content_obj.imagecontent.image.url != "":
+            return "novalidate"
+    return ""
+
+
  

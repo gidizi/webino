@@ -6,6 +6,11 @@
 	{% load static %}
 		<script src="{% static 'content_panel.js' %}"></script>
 	<script>
+		if (window.performance && window.performance.navigation.type == window.performance.navigation.TYPE_BACK_FORWARD) {
+		    alert('Got here using the browser "Back" or "Forward" button.');
+		    location.reload(true);
+		}
+
 		$(document).ready(function(){
 			{% if page.background_img %} //when 'if' condition was written by javascript, if was not anyexisting background image, django raised an error
 				$('.mainDiv').css("background-image", "url('{{page.background_img.url}}')");
@@ -220,7 +225,7 @@
 				console.log("tuto_stage ",tuto_stage)
 				if (!((tuto_stage == -1) || (tuto_stage == last_tuto_stage+1))){
 					ev.preventDefault();
-					alert("Please Finish the tutorial or click the 'Skip Tutorial' button before pressing the Add Content / Edit Content buttons.")
+					alert("Please Finish the tutorial OR Click the 'Skip Tutorial' Button before pressing the Add Content / Edit Content buttons.")
 				}
 			})
 		})
