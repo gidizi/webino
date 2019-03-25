@@ -207,7 +207,7 @@
 			}
 
 			if (conType == "image"){
-			    wid = String(width*90)
+			    wid = String(width*84)
 			    return "<img src='https://via.placeholder.com/"+wid+"x300?text=Image area' alt='Place Holder'>"
 			}
 
@@ -416,8 +416,9 @@
 			tuto_stage = 0
 			if (!($(".background_thumbnail").length)){
 				$("#chooseBackground").css("border", "3px solid red")
+				$("#skipBackground").css("border", "3px dashed red")
 				current_tuto_marked_elem = $("#chooseBackground")
-				var firstStepInstructions = '<p>Welcome to the page Structure Editor\'s Toturial</p>				<p>This Tool will help you to design the Page\'s Template</p>				<p>Let\'s begin with Choosing a BackGround Image for the Page (red framed), after choosing and image, Press the Upload Image button</p>'
+				var firstStepInstructions = '<p>Welcome to the page\'s Template Editor Toturial</p>				<p>This Tool will help you to design the Page\'s Template</p>				<p>Let\'s begin with Choosing a BackGround Image for the Page (red framed), after choosing and image, Press the Upload Image button</p><p>Note that you can also click the \'continue without background\' button below</p>'
 				$("#tutorial").append(firstStepInstructions)
 				$("#skipBackground").show()
 				console.log("enter aint found image")
@@ -427,7 +428,7 @@
 			}
 		}
 
-		$(document).ready(function(){
+	/*	$(document).ready(function(){
 			$("#uploadImage, #removeBackground").on('click', function(){
 				if ($("#creationPanel").find(".propCont").length != 0){
 					if(confirm("This Action will cause a page Refresh. ANY USAVED CHANGES WILL BE DELETED. are you sure you want to make this action? Please make sure your'e structure is saved before clicking yes.")){
@@ -437,7 +438,7 @@
 					}
 				}
 			});
-		});
+		}); */
 
 		//IMPORTENT NOTE: although it will be much a better design for the createContainer function to  receive only args for block indexes, i couldnt find a way to properly refer to a queryset's index (find a block in row queryset). both the slice function or a custom template tag are returning objects which does not have the "." functionality for getting children and attributs. only the django "for loop" returns proper objects. therefore i decided to temporarily send all requierd objects information from caller. later i will make a better designed function with JSON  
 		function createContainer(row, col, width, offset, contentTitles, contentIds) { 

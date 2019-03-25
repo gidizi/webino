@@ -159,7 +159,7 @@ function initializeTutorial(){
 	tuto_stage = 0
 	$(".mainDiv .contentBox").css("border", "3px solid red")
 	current_tuto_marked_elem = $(".mainDiv .contentBox")
-	$("#tutorial").append("<p>Welcome to the page Content Editor</p>				<p>With this Tool, You will be able to Manage and Insert Content into the Structure You Have designed at the previous stage</p>				<p>To begin, Please Click and Drag one of the Contents (marked with red frame), and Drop It in a Different Block</p><p>Notice that dragging an image to a different sized container will automatically change the image\'s dimensions to fit it's new container</p>")
+	$("#tutorial").append("<p>Welcome to the page\'s Content Management panel</p>				<p>With this Tool, You will be able to Manage and Insert Content into the Structure You Have designed at the previous stage</p>				<p>To begin, Please Click and Drag one of the Contents (marked with red frame), and Drop It in a Different Block</p><p>Notice that dragging an image to a different sized container will automatically change the image\'s dimensions to fit it's new container</p>")
 
 }
 
