@@ -61,7 +61,7 @@ def pageDeepCopy(website, page, page_relates_to):
 	page.save()
 	
 	for page_content in old_page_contents:
-		contentDeepCopy(page_content, page)
+		contentDeepCopy(website, page_content, page)
 	
 
 	for row in old_rows:
@@ -95,7 +95,7 @@ def pageDeepCopy(website, page, page_relates_to):
 					old_acctualcontent.content = content
 					old_acctualcontent.save()"""
 
-def contentDeepCopy(website, content, block_or_page_relates_to, page): #drop page arg after fixing the url page implementation
+def contentDeepCopy(website, content, block_or_page_relates_to, page=None): #drop page arg after fixing the url page implementation
 	old_acctualcontent = None
 	if hasattr(content, 'textcontent'):
 		old_acctualcontent = content.textcontent
