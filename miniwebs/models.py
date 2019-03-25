@@ -57,7 +57,7 @@ class Website(models.Model):
 class Page(models.Model):
 	website = models.ForeignKey(Website, on_delete=models.CASCADE, null=True)
 	relates_to = models.ForeignKey('self', null=True, on_delete=models.SET_NULL, default=None)
-	title = models.CharField(max_length=10) 
+	title = models.CharField(max_length=12) 
 	footer_included = models.BooleanField(default=False)
 	content = GenericRelation(Content, related_query_name='pages')
 	background_img = models.ImageField(upload_to="pages_background", blank=True, null=True)
