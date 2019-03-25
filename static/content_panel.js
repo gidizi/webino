@@ -7,29 +7,29 @@ function tutorial_stage(){
 	tutorial_box = $("#tutorial");
 	var message;
 	if (tuto_stage == 0){
-		message = "Have you seen how the Content relocated at the Dropped in container? Now Please Click the Up or Down Arrows for a block with more then one piece of content inside"
+		message = "Have you noticed how the Content relocated at the Dropped in container? Now Please Click the Up or Down Arrows (required a block with more then one piece of content inside)"
 		tuto_update($(".contentBox"), message, $(".moveContentUp, .moveContentDown"))
 		console.log("enter tuto stage 0")
 		return
 	}
 	if (tuto_stage == 1){
-		message = "Nice! Please Click and Drag one of the Contents, and Drop It in a the Page's UnDisplayed Contents Area"
+		message = "Nice! Please Click and Drag one of the Contents (text or image), and Drop It inside the Page's UnDisplayed Contents Area (the red frame below)"
 		tuto_update($(".moveContentUp, .moveContentDown"), message, $("#unAttachedConts"))
 		return
 	}
 	if (tuto_stage == 2){
-		message = "Notice that you can drop Undisplayed contents back in a container anytime (you can try it right now). Now Click on Content's Delete Button to delete a Content, then click Yes for the message displayed"
+		message = "Notice that you can drop Undisplayed contents back in a container anytime (you can try it right now). Now Click on Content's Delete Button to delete a Content, then click \'Accept\' for the message displayed"
 		tuto_update($("#unAttachedConts"), message, $(".delContentButt"))
 		$("#unAttachedConts").css("border", "solid DodgerBlue")
 		return
 	}
 	if (tuto_stage == 3){
-		message = "Click The Preview Button to see a Preview of this page"
+		message = "Click The Preview Button to see a Preview of your page"
 		tuto_update($(".delContentButt"), message, $("#preview"))
 		return
 	}
 	if (tuto_stage == last_tuto_stage){
-		message = "Congratulations! You have reached the end of the tutorial. You can now Edit / Delete (notice the 'Delete All Contents' button at the top of this box) the auto contents and start Adding New ones. You can combine Text and Images to match your needs. You are able to click the Preview button anytime to see your results. WhenEver You feels like the page is Ready, click the Finish Button below. Do Not Worry, you will be able to edit the page anytime."
+		message = "Congratulations! You have reached the end of the tutorial. You can now Edit / Delete (you can use the 'Delete All Contents' button at the left top of this box) the auto contents, and start Adding your own\'s. You can combine Text and Images to match your needs. You are able to click the Preview button anytime to see your results. Whenever You feels like the page is Ready, click the Finish Button below. Do Not Worry, you will be able to edit the page later on."
 		tuto_update($("#preview"), message )
 		$("#deleteAutoContents").show()
 		return
@@ -159,7 +159,7 @@ function initializeTutorial(){
 	tuto_stage = 0
 	$(".mainDiv .contentBox").css("border", "3px solid red")
 	current_tuto_marked_elem = $(".mainDiv .contentBox")
-	$("#tutorial").append("<p>Welcome to the page\'s Content Management panel</p>				<p>With this Tool, You will be able to Manage and Insert Content into the Structure You Have designed at the previous stage</p>				<p>To begin, Please Click and Drag one of the Contents (marked with red frame), and Drop It in a Different Block</p><p>Notice that dragging an image to a different sized container will automatically change the image\'s dimensions to fit it's new container</p>")
+	$("#tutorial").append("<p>Welcome to the page\'s Content Management panel</p>				<p>With this Tool, You will be able to Manage and Insert Content into the Template You Have designed</p>				<p>To begin, Please Click and Drag one of the Contents (marked with red frame), and Drop It in a Different Block</p><p>Notice that dragging an image to a different sized container will automatically change the image\'s dimensions to fit it's new container</p>")
 
 }
 

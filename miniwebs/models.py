@@ -39,7 +39,7 @@ class Content(models.Model): #make sure it have to be at the top of the page. if
 
 class Website(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True) # change it later so if user deletes account, business hall will stay unless user explicitly decides to delete it
-	business_name = models.CharField(max_length=15)
+	business_name = models.CharField(max_length=16)
 	#business_type = models.CharField(max_length=16)  # can add "choices" to limit to several options.
 	web_url = models.CharField(max_length=10, unique=True)
 	#theme = models.CharField(max_length=20) #if everything works fine - delete this line

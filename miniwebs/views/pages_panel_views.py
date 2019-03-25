@@ -31,9 +31,10 @@ def panel(request, website_id, action, page_id=None):
 		try:
 			page = website.page_set.first() #dont want to automatically send it to the template when clicking 'Website Preview' button, because of the special case when no pages exists
 			first_page_url = reverse('page', kwargs={'web_url' : website.web_url, 'page_id' : page.id})
-			return render(request, 'miniwebs/panel.html', {'website' : website, 'page' : page, 'action' : action, 'panel' : True, 'first_page_url' : first_page_url})
 		except:
 			page = None
+			first_page_url = reverse('page', kwargs={'web_url' : website.web_url})
+		return render(request, 'miniwebs/panel.html', {'website' : website, 'page' : page, 'action' : action, 'panel' : True, 'first_page_url' : first_page_url})
 	else:
 		page = None
 	return render(request, 'miniwebs/panel.html', {'website' : website, 'page' : page, 'action' : action, 'panel' : True})

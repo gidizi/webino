@@ -302,7 +302,7 @@
 					tuto_stage += 2
 				} else {
 					console.log("didnt found more then 1 row")
-					message = "Now Please Click the + (plus) button to Add a Row to the page's template"
+					message = "Now Please Click the + (plus) button to Add a New Row to the page's template"
 					tuto_update($("#chooseBackground"), message, $("#addRow"))
 					return
 				}
@@ -310,7 +310,7 @@
 
 			if (tuto_stage == 1){
 				console.log("enter tuto stage 1")
-				message = "Click the + (plus) at the right side of the newly created row to Add a Content Container to the row"
+				message = "To Add a Content Container to the newly created row, please Click the + (plus) at the right side of the screen"
 				tuto_update($("#addRow"), message, $("#creationPanel").find(".addContainer"))
 				return
 			}
@@ -329,12 +329,12 @@
 			}
 
 			if (tuto_stage == 4){
-				message = 'Great! now Change the "Blocks Width" value to determine the width of the content block'
+				message = 'Great!  now Change the "Blocks Width" value to determine the width of the content block'
 				tuto_update($("#creationPanel").find(".addContainer"), message,$("#creationPanel").find(".width"))
 				return
 			}
 			if (tuto_stage == 5){
-				message = 'Change the "Distance from the left element" value to determine the the block area distance from its left block/border. Notice that you will not be able to choose a width and distance values of blocks, which will be wider then a full row.'
+				message = 'Change the "Distance from the left element" value to determine the gap between the container to its left container/border. Notice that you will not be able to choose a width and distance values of blocks, which will be wider then a full row.'
 				tuto_update($("#creationPanel").find(".width"), message,$("#creationPanel").find(".offset"))
 				return
 			}
@@ -344,17 +344,17 @@
 				return
 			}
 			if (tuto_stage == 7){
-				message = "Choose an ExampleContent Type to Preview the Page's Structure with Content Inside it"
+				message = "Choose an ExampleContent Type to Preview the Page's Template with Content Inside it"
 				tuto_update($("#preview"), message,$("#creationPanel").find(".selectType"))
 				return
 			}
 			if (tuto_stage == 8){
-				message = 'You can keep filling the containers with and Example Content Image or Text, Whenever you feels like you have got a good demonstration of the page, Click the "Keep Editing" button'
+				message = 'You can keep filling the containers with an Example Image or Text, Whenever you feels like you have got a good demonstration of the page, Click the "Keep Editing" button'
 				tuto_update($("#creationPanel").find(".selectType"), message,$("#propsPanel"))
 				return
 			}
 			if (tuto_stage == 9){
-				message = 'Please add more containers, and keep Building and Modifing the Page Structure and the Containers Width and Distance. FOR A BETTER PROJECT DISPLAY WE DEEPLY RECOMMAND TO CREATE SEVERAL ROW AND APPLY VARIOUS CONTAINERS WIDTHS AND DISTANCES. When the template is ready, click the Save Structure button. We recommand you to try to use the other functions that you havent used yet such as Uploading Background Images, Switching Between Rows, Deleting Rows, Deleting Containers'
+				message = 'Please add more containers, and keep Building and Modifing the Page Structure. FOR A BETTER PROJECT DISPLAY WE DEEPLY RECOMMAND TO CREATE SEVERAL ROW AND APPLY VARIOUS CONTAINER\'S WIDTHS AND DISTANCES. When the template is ready, click the Save Structure button. We recommand you to try using the functions that you havent used yet, such as Switching Between Rows, Deleting Rows, and Deleting Containers'
 				tuto_update($("#propsPanel").find(".selectType"), message)
 				return
 			}
@@ -418,7 +418,7 @@
 				$("#chooseBackground").css("border", "3px solid red")
 				$("#skipBackground").css("border", "3px dashed red")
 				current_tuto_marked_elem = $("#chooseBackground")
-				var firstStepInstructions = '<p>Welcome to the page\'s Template Editor Toturial</p>				<p>This Tool will help you to design the Page\'s Template</p>				<p>Let\'s begin with Choosing a BackGround Image for the Page (red framed), after choosing and image, Press the Upload Image button</p><p>Note that you can also click the \'continue without background\' button below</p>'
+				var firstStepInstructions = '<p>Welcome to the page\'s Template Editor Tutorial</p>				<p>This Tool will help you to design the Page\'s Template</p>				<p>Let\'s begin with Choosing a BackGround Image for the Page (red framed),</p> <p>athen, Press the Upload Image button</p><p>Note that you can also click the \'continue without background\' button below</p>'
 				$("#tutorial").append(firstStepInstructions)
 				$("#skipBackground").show()
 				console.log("enter aint found image")
