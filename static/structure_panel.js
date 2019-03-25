@@ -3,6 +3,12 @@
 		it seems wrong cause i think its running without relation to buttuon press
 		try to get in after the on click or change or somthing */
 
+		var tuto_stage
+		var current_tuto_marked_elem
+
+		var nextRowId = 0 //because of the users ability to change the order of the rows, the last row id, will not necessarily be the id of the last row at the html stracture (which will be given back by simple JS). instead of looping through the elements ids and look for the hightest index, i decided to create a variable for row id counter. 
+		
+		//can consider later just to update the id's every row switch or delete, and then can just get the next id from counting rows and adding 1
 
 
 		//adds new row to the page
@@ -143,9 +149,6 @@
 		})
 
 
-
-
-
 		//show/update the exmaple content type
 		$(document).ready(function(){
 			var conTypeChild = 'div div div div div .selectType' //cannot refer direclty to the .selectType because this element was created dynamically by JS
@@ -221,7 +224,6 @@
 		}
 				
 
-
 		function changeProp(prevVal, newVal, type, changedElem){
 			// I prefered passing $this instead of using event.currentTarget, cause then i would have to pass the elemId of the child eith
 			//rowIdField = changedElem.parent().parent().parent().attr('id')
@@ -253,6 +255,7 @@
 			};
 		};
 
+
 		function lineLength(rowId){ //looks like its working well
 			var lenCount = 0
 			console.log("add to count:")
@@ -282,9 +285,183 @@
 			}
 		}
 
-		var nextRowId = 0 //because of the users ability to change the order of the rows, the last row id, will not necessarily be the id of the last row at the html stracture (which will be given back by simple JS). instead of looping through the elements ids and look for the hightest index, i decided to create a variable for row id counter. 
-		
-		//can consider later just to update the id's every row switch or delete, and then can just get the next id from counting rows and adding 1
+
+		function tutorial_stage(){
+			tutorial_box = $("#tutorial");
+			var message;
+			console.log ('$("#creationPanel div div div div #contButt0")',$("#creationPanel div div div div #contButt0"))
+			console.log('$("#creationPanel").find("#contButt0")',$("#creationPanel").find("#contButt0"))
+			if (tuto_stage == 0){
+				$("#skipBackground").hide()
+				//to avoid instruction duplication if elements already exists
+				console.log("enter tuto stage 0")
+				if ($("#creationPanel").find(".mainrow").length >=1){ //if structure already have rows, skip 2 stages
+					console.log("found more then 1 row")
+					$("#chooseBackground").css('border-style', 'none none solid solid')
+					$("#chooseBackground").css('border-color', 'DodgerBlue') //it needs a special frame which the simple 'tuto_update' function should not make.
+					tuto_stage += 2
+				} else {
+					console.log("didnt found more then 1 row")
+					message = "Now Please Click the + (plus) button to Add a Row to the page's template"
+					tuto_update($("#chooseBackground"), message, $("#addRow"))
+					return
+				}
+			}
+
+			if (tuto_stage == 1){
+				console.log("enter tuto stage 1")
+				message = "Click the + (plus) at the right side of the newly created row to Add a Content Container to the row"
+				tuto_update($("#addRow"), message, $("#creationPanel").find(".addContainer"))
+				return
+			}
+
+			if (tuto_stage == 2){
+				console.log("enter tuto stage 2")
+				message = "Click the Lowest Red Framed + (plus) button again to Add a another Row to the page's template"
+				tuto_update($("#creationPanel").find(".addContainer"), message, $("#addRow"))
+				return
+			}
+
+			if (tuto_stage == 3){
+				message = 'Keep adding containers until there will be at least 4 Containers at the different rows'
+				tuto_update($("#addRow"), message,$("#creationPanel").find(".addContainer"))
+				return
+			}
+
+			if (tuto_stage == 4){
+				message = 'Great! now Change the "Blocks Width" value to determine the width of the content block'
+				tuto_update($("#creationPanel").find(".addContainer"), message,$("#creationPanel").find(".width"))
+				return
+			}
+			if (tuto_stage == 5){
+				message = 'Change the "Distance from the left element" value to determine the the block area distance from its left block/border. Notice that you will not be able to choose a width and distance values of blocks, which will be wider then a full row.'
+				tuto_update($("#creationPanel").find(".width"), message,$("#creationPanel").find(".offset"))
+				return
+			}
+			if (tuto_stage == 6){
+				message = "Click at the 'Page Preview' button to see a simulation of the Page's structure"
+				tuto_update($("#creationPanel").find(".offset"), message,$("#preview"))
+				return
+			}
+			if (tuto_stage == 7){
+				message = "Choose an ExampleContent Type to Preview the Page's Structure with Content Inside it"
+				tuto_update($("#preview"), message,$("#creationPanel").find(".selectType"))
+				return
+			}
+			if (tuto_stage == 8){
+				message = 'You can keep filling the containers with and Example Content Image or Text, Whenever you feels like you have got a good demonstration of the page, Click the "Keep Editing" button'
+				tuto_update($("#creationPanel").find(".selectType"), message,$("#propsPanel"))
+				return
+			}
+			if (tuto_stage == 9){
+				message = 'Please add more containers, and keep Building and Modifing the Page Structure and the Containers Width and Distance. FOR A BETTER PROJECT DISPLAY WE DEEPLY RECOMMAND TO CREATE SEVERAL ROW AND APPLY VARIOUS CONTAINERS WIDTHS AND DISTANCES. When the template is ready, click the Save Structure button. We recommand you to try to use the other functions that you havent used yet such as Uploading Background Images, Switching Between Rows, Deleting Rows, Deleting Containers'
+				tuto_update($("#propsPanel").find(".selectType"), message)
+				return
+			}
+		}
+
+		function tuto_update(previous_marked_elem, new_text, new_marking_elem)
+		{
+			previous_marked_elem.css("border", "")
+			if (previous_marked_elem.is($("#chooseBackground"))){ //private case for default background
+				$("#chooseBackground").css('border-style', 'none none solid solid')
+				$("#chooseBackground").css('border-color', 'DodgerBlue')
+			}
+			if (new_marking_elem) {
+				new_marking_elem.css("border", "3px solid red")
+			}
+			tutorial_box.text(new_text)
+			tuto_stage++
+			current_tuto_marked_elem = new_marking_elem //documenting for usage in other functions
+		}
+
+
+		$(document).ready(function(){
+			$("#skipBackground").on('click', function(){
+				console.log("entered the skipBackground button event")
+				tutorial_stage();
+			});
+		});
+
+		$(document).ready(function(){
+			$("#skipTutorial").on('click', function(){
+				tuto_stage = -1
+				$(this).hide()
+				$("#activateTutorial").show()
+				$("#tutorial").hide()
+				$("#tutorial").text("")
+				$("#skipBackground").hide()
+				current_tuto_marked_elem.css("border", "") //disactivation visual instructions
+				if (current_tuto_marked_elem.is($("#chooseBackground"))){ //private case for default background
+					console.log("entered the condition")
+					$("#chooseBackground").css('border-style', 'none none solid solid')
+					$("#chooseBackground").css('border-color', 'DodgerBlue')
+				}
+			});
+		});
+
+		$(document).ready(function(){
+			$("#activateTutorial").on('click', function(){
+				initialTutorialStageConsideringImageStatus() //activating instructions
+			});
+		});
+
+		/*Determing initial tutorial stage with respect to image uploaded by the user.
+		Due to the requierment of the page to refresh when uploading and image (form must be sent)
+		we distinguish between 2 initial tutorial stage - before image uploaded, and after it (or if skipped) */
+		function initialTutorialStageConsideringImageStatus() {
+			$("#activateTutorial").hide()
+			$("#skipTutorial").show()
+			$("#tutorial").show()
+			tuto_stage = 0
+			if (!($(".background_thumbnail").length)){
+				$("#chooseBackground").css("border", "3px solid red")
+				current_tuto_marked_elem = $("#chooseBackground")
+				var firstStepInstructions = '<p>Welcome to the page Structure Editor\'s Toturial</p>				<p>This Tool will help you to design the Page\'s Template</p>				<p>Let\'s begin with Choosing a BackGround Image for the Page (red framed), after choosing and image, Press the Upload Image button</p>'
+				$("#tutorial").append(firstStepInstructions)
+				$("#skipBackground").show()
+				console.log("enter aint found image")
+			} else {
+				tutorial_stage()
+				console.log("enter found image")
+			}
+		}
+
+		$(document).ready(function(){
+			$("#uploadImage, #removeBackground").on('click', function(){
+				if ($("#creationPanel").find(".propCont").length != 0){
+					if(confirm("This Action will cause a page Refresh. ANY USAVED CHANGES WILL BE DELETED. are you sure you want to make this action? Please make sure your'e structure is saved before clicking yes.")){
+
+					} else {
+						return false
+					}
+				}
+			});
+		});
+
+		//IMPORTENT NOTE: although it will be much a better design for the createContainer function to  receive only args for block indexes, i couldnt find a way to properly refer to a queryset's index (find a block in row queryset). both the slice function or a custom template tag are returning objects which does not have the "." functionality for getting children and attributs. only the django "for loop" returns proper objects. therefore i decided to temporarily send all requierd objects information from caller. later i will make a better designed function with JSON  
+		function createContainer(row, col, width, offset, contentTitles, contentIds) { 
+			console.log("row col",row,col, width, offset)
+			var container = ""
+			container += '<div style="border:2px solid DodgerBlue;" class="col-md-'+width+' offset-md-'+offset+' propCont" id="propCont'+col+'"> 	<div class="properties">	<b>Blocks Width</b><br>			<select class="width" id="width'+col+'">	    	  	<option value="12">full width</option><option value="10">five sixths</option>	    	  	<option value="8">two thirds</option>	    	  	<option value="6">half</option>	    	  	<option value="4">third</option>	    	  	<option value="2" selected="">sixth</option>	    	</select>	    	<br><br>	    <b>Distance from left element</b><br>						    		    	<select class="offset" id="offset'+col+'"> <option value="10">five sixths</option>	    	  	<option value="8">two thirds</option>	    	  	<option value="6">half</option>	    	  	<option value="4">third</option>	    	  	<option value="2">sixth</option>	    	  	<option value="0" selected="">none</option>	  <br>  	</select> <input class="attachedContentId" id="attachedContentId'+col+'" value="'+contentIds+'" type="hidden"><br><br> <button class="glyphicon glyphicon-remove deleteContainer" type="button" title="Click to delete this block" id="delete '+col+'"></button></div>'
+			container +='<div class="conType" style="display:none;" ><b>Select Content Type</b><select class="selectType" id="selectType'+col+'" >			<option value=""></option><option value="text">Text</option>				  	<option value="image">Image</option>				  					</select></div>'
+			container += '<div class="exampleContent" id="exampleContent'+col+'" style="display:none;"></div>'
+			if (contentTitles){ //if contentTitles has received, existingContent must exit at the DB and be received either.
+				//container+='<div class="exampleContent" id="exampleContent'+col+'" style="display:none;">'+existingContent+'</div>'
+				container+='<p style="display:inline">attached content</p> <i class="glyphicon glyphicon-book contentIndication" style="font-size:24px;" title="This Block has attached content\ncontent titles:\n'+contentTitles+'"></i>'
+			} /*else {
+				container +='<div class="conType" style="display:none;" ><b>Select Content Type</b><select class="selectType" id="selectType'+col+'" >			<option value=""></option><option value="text">Text</option>				  	<option value="image">Image</option>				  	<option value="form">Form</option>				</select></div>'
+				container += '<div class="exampleContent" id="exampleContent'+col+'" style="display:none;"></div>' 
+			} */
+			container +='</div>'
+			currRow = $("#pageRow"+row)
+			currRow.append(container);
+			currCont = currRow.children("#propCont"+col)
+			currCont.find(".width").val(width)
+			currCont.find(".offset").val(offset)
+			hideShowButt(row) 
+		}
+
 
 		/*
 				function updateConsNames(next_row_div){
